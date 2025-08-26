@@ -90,6 +90,9 @@
               RECEIVING
                 rv_ratio       = lv_tax_ratio
             ).
+            IF <ls_item>-amount > 0.
+              <ls_item>-amount  *= -1.
+            ENDIF.
             lv_taxamount = <ls_item>-amount - ( <ls_item>-amount / ( 1 + ( lv_tax_ratio / 100 ) ) ).
 *her zaman ekrandaki - olan satırlar için vergi göstergesi girilebilecekmiş o yüzden vergi göstergesi - bulunuyor bu yüzden mutlak değeri alınıyor.
 *örneğin 102 li hesaba -100
