@@ -1,0 +1,102 @@
+[
+ {
+  "table":"BALOBJ",
+  "data":
+  [
+   {
+    "OBJECT":"YEHO_APP_LOG",
+    "ABAP_LANGUAGE_VERSION":"5"
+   }
+  ]
+ },
+ {
+  "table":"BALOBJT",
+  "data":
+  [
+   {
+    "SPRAS":"E",
+    "OBJECT":"YEHO_APP_LOG",
+    "OBJTXT":"application Log Object"
+   },
+   {
+    "SPRAS":"T",
+    "OBJECT":"YEHO_APP_LOG",
+    "OBJTXT":"Uygulama Log Objesi"
+   }
+  ]
+ },
+ {
+  "table":"BALSUB",
+  "data":
+  [
+   {
+    "OBJECT":"YEHO_APP_LOG",
+    "SUBOBJECT":"YEHO_AUTOMATIC"
+   },
+   {
+    "OBJECT":"YEHO_APP_LOG",
+    "SUBOBJECT":"YEHO_BANK_API"
+   }
+  ]
+ },
+ {
+  "table":"BALSUBT",
+  "data":
+  [
+   {
+    "SPRAS":"E",
+    "OBJECT":"YEHO_APP_LOG",
+    "SUBOBJECT":"YEHO_AUTOMATIC",
+    "SUBOBJTXT":"Automatic Save Log"
+   },
+   {
+    "SPRAS":"E",
+    "OBJECT":"YEHO_APP_LOG",
+    "SUBOBJECT":"YEHO_BANK_API",
+    "SUBOBJTXT":"Bank API Log"
+   },
+   {
+    "SPRAS":"T",
+    "OBJECT":"YEHO_APP_LOG",
+    "SUBOBJECT":"YEHO_AUTOMATIC",
+    "SUBOBJTXT":"Otomatik Kayıt Log"
+   },
+   {
+    "SPRAS":"T",
+    "OBJECT":"YEHO_APP_LOG",
+    "SUBOBJECT":"YEHO_BANK_API",
+    "SUBOBJTXT":"Banka API Log"
+   }
+  ]
+ },
+ {
+  "table":"TADIR",
+  "data":
+  [
+   {
+    "PGMID":"R3TR",
+    "OBJECT":"APLO",
+    "OBJ_NAME":"YEHO_APP_LOG",
+    "KORRNUM":"",
+    "SRCSYSTEM":"...",
+    "AUTHOR":"SAP_CUSTOMER",
+    "SRCDEP":"",
+    "DEVCLASS":"YEHO",
+    "GENFLAG":"",
+    "EDTFLAG":"",
+    "CPROJECT":" L",
+    "MASTERLANG":"T",
+    "VERSID":"",
+    "PAKNOCHECK":"",
+    "OBJSTABLTY":"",
+    "COMPONENT":"",
+    "CRELEASE":"",
+    "DELFLAG":"",
+    "TRANSLTTXT":"",
+    "CREATED_ON":"2025-01-07",
+    "CHECK_DATE":"2025-01-07",
+    "CHECK_CFG":""
+   }
+  ]
+ }
+]

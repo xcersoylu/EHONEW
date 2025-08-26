@@ -1,0 +1,21 @@
+  PRIVATE SECTION.
+    TYPES : BEGIN OF ty_hesap,
+              musterino          TYPE string,
+              hesapno            TYPE string,
+              sube               TYPE string,
+              paracinsi          TYPE string,
+              hesaptipi          TYPE string,
+              blokebakiye        TYPE string,
+              cekbakiye          TYPE string,
+              senetbakiye        TYPE string,
+              toplambakiye       TYPE string,
+              kullanabilirbakiye TYPE string,
+              sonharekettarihi   TYPE string,
+              vadebaslangictarih TYPE string,
+              vadebitistarihi    TYPE string,
+              vadesuresi         TYPE string,
+              hesapesnekvade     TYPE string,
+              esnekvadegunsayisi TYPE string,
+              iban               TYPE string,
+            END OF ty_hesap.
+    METHODS get_account_detail RETURNING VALUE(rs_account_detail) TYPE ty_hesap.

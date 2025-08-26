@@ -1,0 +1,1 @@
+CLASS zbp_eho_ddl_i_delete_receipt DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF yeho_ddl_i_delete_receipt.
