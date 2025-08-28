@@ -322,16 +322,17 @@
                              ls_transaction-transaction_instance_id+17(2).
       ls_offline_data-valor = ls_transaction-value_date.
       ls_offline_data-transaction_type = ls_transaction-transaction_id.
-*bankadaki gösterge ile ters çalışması gerekiyor denildi.
-      ls_offline_data-debit_credit = COND #( WHEN ls_transaction-txn_credit_debit_indicator = 'A' THEN 'B'
-                                             WHEN ls_transaction-txn_credit_debit_indicator = 'B' THEN 'A' ).
+**bankadaki gösterge ile ters çalışması gerekiyor denildi.
+*      ls_offline_data-debit_credit = COND #( WHEN ls_transaction-txn_credit_debit_indicator = 'A' THEN 'B'
+*                                             WHEN ls_transaction-txn_credit_debit_indicator = 'B' THEN 'A' ).
+      ls_offline_data-debit_credit = ls_transaction-txn_credit_debit_indicator.
       ls_offline_data-description = ls_transaction-explanation.
       ls_offline_data-payee_vkn = ls_transaction-vkn.
       ls_offline_data-debtor_vkn  = ls_transaction-corr_vkn.
       ls_offline_data-amount = ls_transaction-amount.
-      IF ls_offline_data-debit_credit = 'A'.
-        ls_offline_data-amount = ls_offline_data-amount * -1.
-      ENDIF.
+*      IF ls_offline_data-debit_credit = 'A'.
+*        ls_offline_data-amount = ls_offline_data-amount * -1.
+*      ENDIF.
       ls_offline_data-current_balance = ls_transaction-balance_after_transaction.
       ls_offline_data-sender_iban = ls_transaction-corr_iban.
       ls_offline_data-sender_branch = ls_transaction-corr_unit_num.

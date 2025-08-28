@@ -35,6 +35,7 @@
               et_bank_balance = et_bank_balance
               et_error_messages = et_error_messages
           ).
+          change_debit_credit( CHANGING ct_bank_data = et_bank_data ).
           check_duplicate_receipt( CHANGING ct_bank_data = et_bank_data ).
         ELSE.
           MESSAGE ID ycl_eho_utils=>mc_message_class

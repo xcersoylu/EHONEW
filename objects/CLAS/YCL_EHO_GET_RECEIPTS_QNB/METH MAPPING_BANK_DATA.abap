@@ -130,13 +130,15 @@
       ELSEIF ls_transaction-vhetrxdescription IS NOT INITIAL.
         ls_offline_data-description      = ls_transaction-vhetrxdescription.
       ENDIF.
-*borç alacak göstergesi bankada ters çalıştığı söylendi o yüzden alacak ise borç , borç ise alacağa çevrildi.
-      ls_offline_data-debit_credit = COND #( WHEN ls_transaction-debitorcreditcode = 'A' THEN 'B'
-                                             WHEN ls_transaction-debitorcreditcode = 'B' THEN 'A' ).
-*alacak ise tutarın eksi atılması istendi.
-      ls_offline_data-amount         = COND #( WHEN ls_offline_data-debit_credit = 'A'
-                                                    THEN -1 * ls_transaction-transactionamount
-                                                    ELSE ls_transaction-transactionamount ) .
+**borç alacak göstergesi bankada ters çalıştığı söylendi o yüzden alacak ise borç , borç ise alacağa çevrildi.
+*      ls_offline_data-debit_credit = COND #( WHEN ls_transaction-debitorcreditcode = 'A' THEN 'B'
+*                                             WHEN ls_transaction-debitorcreditcode = 'B' THEN 'A' ).
+       ls_offline_data-debit_credit = ls_transaction-debitorcreditcode.
+**alacak ise tutarın eksi atılması istendi.
+*      ls_offline_data-amount         = COND #( WHEN ls_offline_data-debit_credit = 'A'
+*                                                    THEN -1 * ls_transaction-transactionamount
+*                                                    ELSE ls_transaction-transactionamount ) .
+      ls_offline_data-amount = ls_transaction-transactionamount.
       IF ls_transaction-debitorcreditcode EQ 'A'.
         ls_offline_data-payee_vkn     = ls_transaction-opponenttaxnopidno.
       ELSEIF ls_transaction-debitorcreditcode EQ 'B'.

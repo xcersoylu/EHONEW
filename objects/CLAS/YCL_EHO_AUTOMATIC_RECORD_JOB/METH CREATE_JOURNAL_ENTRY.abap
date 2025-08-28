@@ -3,6 +3,8 @@
               currencyrole           TYPE string,
               journalentryitemamount TYPE yeho_e_wrbtr,
               currency               TYPE waers,
+              taxamount              TYPE yeho_e_wrbtr,
+              taxbaseamount          TYPE yeho_e_wrbtr,
             END OF ty_currencyamount.
     TYPES tt_currencyamount TYPE TABLE OF ty_currencyamount WITH EMPTY KEY.
     TYPES : BEGIN OF ty_glitem,
@@ -49,14 +51,26 @@
               documentitemtext              TYPE sgtxt,
               specialglcode                 TYPE yeho_e_umskz,
               _currencyamount               TYPE tt_currencyamount,
-            END OF ty_apitems.
+            END OF ty_apitems,
+            BEGIN OF ty_taxitems,
+              glaccountlineitem     TYPE string,
+              taxcode               TYPE mwskz,
+              taxitemclassification TYPE ktosl,
+              conditiontype         TYPE kschl,
+              taxcountry            TYPE fot_tax_country,
+              taxrate               TYPE yeho_e_tax_ratio,
+              _currencyamount       TYPE tt_currencyamount,
+            END OF ty_taxitems.
 
     DATA lt_je             TYPE TABLE FOR ACTION IMPORT i_journalentrytp~post.
     DATA lt_glitem         TYPE TABLE OF ty_glitem.
     DATA lt_apitem         TYPE TABLE OF ty_apitems.
     DATA lt_aritem         TYPE TABLE OF ty_aritems.
+    DATA lt_taxitem        TYPE TABLE OF ty_taxitems.
     DATA lt_saved_receipts TYPE TABLE OF yeho_t_savedrcpt.
-
+    DATA lv_taxamount      TYPE yeho_e_wrbtr.
+    DATA lv_taxbaseamount  TYPE yeho_e_wrbtr.
+    DATA lv_tax_ratio      TYPE yeho_e_tax_ratio.
     TRY.
         DATA(lo_log) = cl_bali_log=>create_with_header( cl_bali_header_setter=>create( object = 'YEHO_APP_LOG'
                                                                                        subobject = 'YEHO_AUTOMATIC' ) ).
@@ -75,13 +89,43 @@
       APPEND INITIAL LINE TO lt_je ASSIGNING FIELD-SYMBOL(<fs_je>).
       TRY.
           <fs_je>-%cid = to_upper( cl_uuid_factory=>create_system_uuid( )->create_uuid_x16( ) ).
+          if <ls_item>-taxcode is NOT INITIAL.
+            get_tax_ratio(
+              EXPORTING
+                iv_taxcode     = <ls_item>-taxcode
+                iv_companycode = <ls_item>-companycode
+              RECEIVING
+                rv_ratio       = lv_tax_ratio
+            ).
+            IF <ls_item>-amount > 0.
+              <ls_item>-amount  *= -1.
+            ENDIF.
+            lv_taxamount = <ls_item>-amount - ( <ls_item>-amount / ( 1 + ( lv_tax_ratio / 100 ) ) ).
+*her zaman ekrandaki - olan satırlar için vergi göstergesi girilebilecekmiş o yüzden vergi göstergesi - bulunuyor bu yüzden mutlak değeri alınıyor.
+*örneğin 102 li hesaba -100
+* 760 lı hesaba 83,33
+* 191 li kdv hesaba 16,67 atılıyor.
+            lv_taxamount = abs( lv_taxamount ).
+            lv_taxbaseamount = <ls_item>-amount + lv_taxamount.
+            lv_taxbaseamount = abs( lv_taxbaseamount ).
+            APPEND VALUE #( glaccountlineitem     = |003|
+                            taxcode               = <ls_item>-taxcode
+                            taxitemclassification = 'VST'
+                            conditiontype         = 'MWVS'
+                            taxrate               = lv_tax_ratio
+                            _currencyamount = VALUE #( ( currencyrole = '00'
+                                                         journalentryitemamount = lv_taxamount
+                                                         currency = <ls_item>-currency
+                                                         taxamount = lv_taxamount
+                                                         taxbaseamount = lv_taxbaseamount ) ) ) TO lt_taxitem.
+          endif.
           APPEND VALUE #( glaccountlineitem             = |001|
                           glaccount                     = <ls_item>-rule_data-account_no_102
                           assignmentreference           = <ls_item>-rule_data-assignmentreference
                           reference1idbybusinesspartner = <ls_item>-rule_data-reference1idbybusinesspartner
                           reference2idbybusinesspartner = <ls_item>-rule_data-reference2idbybusinesspartner
                           reference3idbybusinesspartner = <ls_item>-rule_data-reference3idbybusinesspartner
-                          costcenter                    = <ls_item>-rule_data-costcenter
+*                          costcenter                    = <ls_item>-rule_data-costcenter
                           documentitemtext              = <ls_item>-rule_data-documentitemtext_1
                           _currencyamount = VALUE #( ( currencyrole = '00'
                                                       journalentryitemamount = <ls_item>-amount
@@ -132,7 +176,9 @@
                             documentitemtext              = <ls_item>-rule_data-documentitemtext_2
                             specialglcode                 = <ls_item>-rule_data-specialglcode
                             _currencyamount = VALUE #( ( currencyrole = '00'
-                                                        journalentryitemamount = -1 * <ls_item>-amount
+                                                        journalentryitemamount = COND #( WHEN <ls_item>-taxcode IS INITIAL
+                                                                                         THEN <ls_item>-amount * -1
+                                                                                         ELSE lv_taxbaseamount )
                                                         currency = <ls_item>-currency  ) )          ) TO lt_glitem.
           ENDIF.
           <fs_je>-%param = VALUE #( companycode                  = <ls_item>-rule_data-companycode
@@ -146,6 +192,7 @@
                                     _apitems                     = VALUE #( FOR wa_apitem  IN lt_apitem  ( CORRESPONDING #( wa_apitem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _aritems                     = VALUE #( FOR wa_aritem  IN lt_aritem  ( CORRESPONDING #( wa_aritem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _glitems                     = VALUE #( FOR wa_glitem  IN lt_glitem  ( CORRESPONDING #( wa_glitem  MAPPING _currencyamount = _currencyamount ) ) )
+                                    _taxitems                    = VALUE #( FOR wa_taxitem  IN lt_taxitem  ( CORRESPONDING #( wa_taxitem  MAPPING _currencyamount = _currencyamount ) ) )
                                   ).
           WAIT UP TO 1 SECONDS.
           MODIFY ENTITIES OF i_journalentrytp

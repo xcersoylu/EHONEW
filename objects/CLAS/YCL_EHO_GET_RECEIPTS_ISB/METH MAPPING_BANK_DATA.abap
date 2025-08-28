@@ -13,6 +13,7 @@
               karsisube       TYPE string,
               isl_id          TYPE string,
               islemturu       TYPE string,
+              isl_saat        TYPE string,
             END OF ty_hareket,
             tt_hareket TYPE TABLE OF ty_hareket WITH EMPTY KEY,
             BEGIN OF ty_hareketler,
@@ -70,6 +71,11 @@
 
       IF <fs_hareket>-hareketsirano IS NOT INITIAL.
         ls_offline_data-time = <fs_hareket>-hareketsirano+6(6).
+      ELSE.
+        CONCATENATE <fs_hareket>-isl_saat(2)
+                    <fs_hareket>-isl_saat+3(2)
+                    <fs_hareket>-isl_saat+6(2)
+               INTO ls_offline_data-time.
       ENDIF.
       CHECK ls_offline_data-physical_operation_date = mv_startdate.
 
@@ -115,7 +121,7 @@
       ELSE.
         lv_opening_balance = ls_bank_data-current_balance - ls_bank_data-amount.
       ENDIF.
-      SORT lt_bank_data BY physical_operation_date time ASCENDING.
+      SORT lt_bank_data BY physical_operation_date time DESCENDING.
       READ TABLE lt_bank_data INTO ls_bank_data INDEX 1.
       lv_closing_balance = ls_bank_data-current_balance.
     ELSE.

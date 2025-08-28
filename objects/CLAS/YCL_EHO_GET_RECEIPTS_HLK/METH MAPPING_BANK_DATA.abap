@@ -125,14 +125,14 @@
     ENDLOOP.
     IF sy-subrc = 0.
       DATA(lt_bank_data) = et_bank_data.
-      SORT lt_bank_data BY physical_operation_date time ASCENDING.
+      SORT lt_bank_data BY sequence_no ASCENDING.
       READ TABLE lt_bank_data INTO DATA(ls_bank_data) INDEX 1.
       IF ls_bank_data-debit_credit = 'B'.
         lv_opening_balance = ls_bank_data-current_balance + ls_bank_data-amount.
       ELSE.
         lv_opening_balance = ls_bank_data-current_balance - ls_bank_data-amount.
       ENDIF.
-      SORT lt_bank_data BY physical_operation_date time ASCENDING.
+      SORT lt_bank_data BY sequence_no desCENDING.
       READ TABLE lt_bank_data INTO ls_bank_data INDEX 1.
       lv_closing_balance = ls_bank_data-current_balance.
     ELSE.

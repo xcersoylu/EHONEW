@@ -112,20 +112,22 @@
       ls_offline_data-companycode  = ms_bankpass-companycode.
       ls_offline_data-currency     = ms_bankpass-currency.
       ls_offline_data-description  = <fs_hareket>-aciklamalar.
-
+      ls_offline_data-current_balance  = <fs_hareket>-harekettutari + <fs_hareket>-sonbakiye.
       IF <fs_hareket>-harekettutari LT 0.
-        ls_offline_data-debit_credit = 'A'.
-        ls_offline_data-debtor_vkn = <fs_hareket>-karsihesapvkno.
-        lv_opening_balance = lv_opening_balance - <fs_hareket>-harekettutari.
-      ELSE.
         ls_offline_data-debit_credit = 'B'.
-        ls_offline_data-payee_vkn = <fs_hareket>-karsihesapvkno.
         SHIFT <fs_hareket>-harekettutari BY 1 PLACES LEFT.
-        lv_opening_balance = lv_opening_balance + <fs_hareket>-harekettutari.
+        ls_offline_data-debtor_vkn = <fs_hareket>-karsihesapvkno.
+*        lv_opening_balance = lv_opening_balance - <fs_hareket>-harekettutari.
+      ELSE.
+        ls_offline_data-debit_credit = 'A'.
+        ls_offline_data-payee_vkn = <fs_hareket>-karsihesapvkno.
+*        lv_opening_balance = lv_opening_balance + <fs_hareket>-harekettutari.
+      ENDIF.
+      IF lv_sequence_no = 1.
+        lv_opening_balance = <fs_hareket>-sonbakiye.
       ENDIF.
 
       ls_offline_data-amount           = <fs_hareket>-harekettutari.
-      ls_offline_data-current_balance  = <fs_hareket>-sonbakiye.
       ls_offline_data-receipt_no       = <fs_hareket>-dekontno.
       ls_offline_data-transaction_type = <fs_hareket>-islemkodu.
 
@@ -140,7 +142,7 @@
       ELSE.
         lv_opening_balance = ls_bank_data-current_balance - ls_bank_data-amount.
       ENDIF.
-      SORT lt_bank_data BY physical_operation_date time ASCENDING.
+      SORT lt_bank_data BY physical_operation_date time DESCENDING.
       READ TABLE lt_bank_data INTO ls_bank_data INDEX 1.
       lv_closing_balance = ls_bank_data-current_balance.
     ELSE.

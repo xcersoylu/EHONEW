@@ -9,3 +9,4 @@
                                                                                et_bank_balance TYPE yeho_tt_offlinebd
                                                                                et_error_messages TYPE yeho_tt_message.
     METHODS check_duplicate_receipt CHANGING ct_bank_data      TYPE yeho_tt_offline_bank_data.
+    METHODS change_debit_credit CHANGING ct_bank_data      TYPE yeho_tt_offline_bank_data.
