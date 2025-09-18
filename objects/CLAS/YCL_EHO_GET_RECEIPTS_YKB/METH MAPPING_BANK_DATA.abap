@@ -63,7 +63,7 @@
     DATA lv_closing_balance TYPE yeho_e_closing_balance.
     DATA lv_json type string.
     lv_json = iv_json.
-    REPLACE 'ns1:sorgulaResponse' in lv_json WITH 'response'.
+    REPLACE 'sorgulaResponse' in lv_json WITH 'response'.
     /ui2/cl_json=>deserialize( EXPORTING json = lv_json CHANGING data = ls_json_response ).
     DATA(lv_today) = cl_abap_context_info=>get_system_date( ).
 *    READ TABLE ls_json_response-response-return-hesaplar-hesap-hareketler INTO DATA(ls_hesaplar) WITH KEY hesap-hesapno = ms_bankpass-bankaccount.
