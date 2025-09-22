@@ -33,6 +33,32 @@
          AND bkpf~isreversal = ''
          AND bkpf~isreversed = ''
          INTO TABLE @DATA(lt_manual_documents).
+****şirket kendi hesabından kendine yollamışsa bir bankadan kayıt atıldığı zaman diğerinden atılmaması için
+****başlıktaki JrnlEntryCntrySpecificRef1 alanına YEHO yazılarak bu belgeler de manuel kayıt atılmış gibi davrandırıldı.
+
+    SELECT bseg~companycode,
+           bseg~accountingdocument,
+           bseg~fiscalyear,
+           bseg~accountingdocumentitem,
+           bkpf~postingdate,
+           bseg~absoluteamountintransaccrcy,
+           bseg~transactioncurrency,
+           bseg~glaccount,
+           bseg~debitcreditcode,
+           bkpf~transactioncode,
+           bkpf~accountingdoccreatedbyuser
+       FROM yeho_t_amounttc AS amounttc INNER JOIN i_journalentry AS bkpf ON bkpf~companycode = amounttc~companycode
+                                                                         AND bkpf~accountingdocumenttype = amounttc~document_type
+                                                                         AND bkpf~JrnlEntryCntrySpecificRef1 = amounttc~transaction_code
+                                        INNER JOIN i_operationalacctgdocitem AS bseg ON bseg~companycode = bkpf~companycode
+                                                                                    AND bseg~accountingdocument = bkpf~accountingdocument
+                                                                                    AND bseg~fiscalyear = bkpf~fiscalyear
+       WHERE bkpf~postingdate IN @ms_request-date
+         AND bkpf~isreversal = ''
+         AND bkpf~isreversed = ''
+         AND amounttc~transaction_code = @ycl_eho_utils=>mv_eho_tcode
+         APPENDING TABLE @lt_manual_documents.
+
 ***
     SELECT companycode,
            glaccount

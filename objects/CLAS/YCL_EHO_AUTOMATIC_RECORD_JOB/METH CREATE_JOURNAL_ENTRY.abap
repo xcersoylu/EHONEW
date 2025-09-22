@@ -189,6 +189,8 @@
                                     documentdate                 = <ls_item>-physical_operation_date
                                     postingdate                  = <ls_item>-physical_operation_date
                                     accountingdocumentheadertext = <ls_item>-rule_data-accountingdocumentheadertext
+                                    taxdeterminationdate         = cl_abap_context_info=>get_system_date( )
+                                    JrnlEntryCntrySpecificRef1   = ycl_eho_utils=>mv_eho_tcode
                                     _apitems                     = VALUE #( FOR wa_apitem  IN lt_apitem  ( CORRESPONDING #( wa_apitem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _aritems                     = VALUE #( FOR wa_aritem  IN lt_aritem  ( CORRESPONDING #( wa_aritem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _glitems                     = VALUE #( FOR wa_glitem  IN lt_glitem  ( CORRESPONDING #( wa_glitem  MAPPING _currencyamount = _currencyamount ) ) )

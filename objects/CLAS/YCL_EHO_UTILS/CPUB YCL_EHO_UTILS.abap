@@ -4,6 +4,7 @@ CLASS ycl_eho_utils DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+    class-data mv_eho_tcode type c LENGTH 20 VALUE 'YEHO'.
     CLASS-METHODS find_customer_from_tax_number
       IMPORTING iv_tax_number      TYPE i_customer-taxnumber1
       RETURNING VALUE(rv_customer) TYPE kunnr.
