@@ -73,6 +73,7 @@
     DATA lv_taxamount      TYPE yeho_e_wrbtr.
     DATA lv_taxbaseamount  TYPE yeho_e_wrbtr.
     DATA lv_tax_ratio      TYPE yeho_e_tax_ratio.
+    DATA lv_internal_transfer TYPE c LENGTH 1.
 
     DATA(lv_request_body) = request->get_text( ).
     DATA(lv_get_method) = request->get_method( ).
@@ -158,6 +159,13 @@
                                                         journalentryitemamount = -1 * <ls_item>-amount
                                                         currency = <ls_item>-currency  ) ) ) TO lt_aritem.
           ELSEIF <ls_item>-operationalglaccount IS NOT INITIAL.
+*kendine virman mı?
+            SELECT SINGLE * FROM yeho_t_bankpass WHERE companycode = @<ls_item>-companycode
+                                                   AND glaccount = @<ls_item>-operationalglaccount
+            INTO @DATA(ls_bankpass).
+            IF sy-subrc = 0.
+              lv_internal_transfer = abap_true.
+            ENDIF.
             APPEND VALUE #( glaccountlineitem             = |002|
                             glaccount                     = <ls_item>-operationalglaccount
                             assignmentreference           = <ls_item>-assignmentreference
@@ -184,7 +192,7 @@
                                     postingdate                  = <ls_item>-physical_operation_date
                                     accountingdocumentheadertext = <ls_item>-accountingdocumentheadertext
                                     taxdeterminationdate         = cl_abap_context_info=>get_system_date( )
-                                    JrnlEntryCntrySpecificRef1   = ycl_eho_utils=>mv_eho_tcode
+*                                    JrnlEntryCntrySpecificRef1   = ycl_eho_utils=>mv_eho_tcode
                                     _apitems                     = VALUE #( FOR wa_apitem  IN lt_apitem  ( CORRESPONDING #( wa_apitem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _aritems                     = VALUE #( FOR wa_aritem  IN lt_aritem  ( CORRESPONDING #( wa_aritem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _glitems                     = VALUE #( FOR wa_glitem  IN lt_glitem  ( CORRESPONDING #( wa_glitem  MAPPING _currencyamount = _currencyamount ) ) )
@@ -222,13 +230,15 @@
                               receipt_no              = <ls_item>-receipt_no
                               physical_operation_date = <ls_item>-physical_operation_date
                               accountingdocument      = VALUE #( ls_commit_reported-journalentry[ 1 ]-accountingdocument OPTIONAL )
-                              fiscal_year             = VALUE #( ls_commit_reported-journalentry[ 1 ]-fiscalyear OPTIONAL ) ) TO lt_saved_receipts.
+                              fiscal_year             = VALUE #( ls_commit_reported-journalentry[ 1 ]-fiscalyear OPTIONAL )
+                              internal_transfer       = lv_internal_transfer ) TO lt_saved_receipts.
 
             ELSE.
               ms_response-messages = VALUE #( BASE ms_response-messages FOR wa_commit IN ls_commit_reported-journalentry ( message = wa_commit-%msg->if_message~get_text( ) messagetype = mc_error ) ).
             ENDIF.
           ENDIF.
-          CLEAR : lt_je, lt_glitem , lt_apitem , lt_aritem , ls_failed , ls_reported , ls_commit_failed , ls_commit_reported.
+          CLEAR : lt_je, lt_glitem , lt_apitem , lt_aritem , ls_failed ,
+                  ls_reported , ls_commit_failed , ls_commit_reported , lv_internal_Transfer.
         CATCH cx_uuid_error INTO DATA(lx_error).
           APPEND VALUE #( message = lx_error->get_longtext(  ) messagetype = mc_error ) TO ms_response-messages.
       ENDTRY.

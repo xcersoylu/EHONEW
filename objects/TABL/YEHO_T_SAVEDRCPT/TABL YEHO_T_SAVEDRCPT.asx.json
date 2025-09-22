@@ -246,6 +246,39 @@
    },
    {
     "TABNAME":"YEHO_T_SAVEDRCPT",
+    "FIELDNAME":"INTERNAL_TRANSFER",
+    "AS4LOCAL":"N",
+    "AS4VERS":0,
+    "POSITION":8,
+    "KEYFLAG":"",
+    "MANDATORY":"",
+    "ROLLNAME":"",
+    "CHECKTABLE":"",
+    "ADMINFIELD":"0",
+    "INTTYPE":"C",
+    "INTLEN":2,
+    "REFTABLE":"",
+    "PRECFIELD":"",
+    "REFFIELD":"",
+    "CONROUT":"",
+    "NOTNULL":"",
+    "DATATYPE":"CHAR",
+    "LENG":1,
+    "DECIMALS":0,
+    "DOMNAME":"",
+    "SHLPORIGIN":"",
+    "TABLETYPE":"",
+    "DEPTH":0,
+    "COMPTYPE":"",
+    "REFTYPE":"",
+    "LANGUFLAG":"",
+    "DBPOSITION":0,
+    "ANONYMOUS":"",
+    "OUTPUTSTYLE":0,
+    "SRS_ID":0
+   },
+   {
+    "TABNAME":"YEHO_T_SAVEDRCPT",
     "FIELDNAME":"PHYSICAL_OPERATION_DATE",
     "AS4LOCAL":"N",
     "AS4VERS":0,
@@ -321,6 +354,13 @@
     "DDLANGUAGE":"T",
     "AS4LOCAL":"N",
     "FIELDNAME":"CLIENT",
+    "DDTEXT":""
+   },
+   {
+    "TABNAME":"YEHO_T_SAVEDRCPT",
+    "DDLANGUAGE":"T",
+    "AS4LOCAL":"N",
+    "FIELDNAME":"INTERNAL_TRANSFER",
     "DDTEXT":""
    }
   ]
