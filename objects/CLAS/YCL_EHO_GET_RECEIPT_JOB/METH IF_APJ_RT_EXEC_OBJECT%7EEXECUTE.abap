@@ -19,7 +19,7 @@
           APPEND INITIAL LINE TO lt_glaccount_range ASSIGNING FIELD-SYMBOL(<ls_glaccount_range>).
           <ls_glaccount_range> = CORRESPONDING #( ls_parameter ).
         WHEN 'P_STARTD'.
-          lv_startdate = COND #( WHEN ls_parameter-low IS INITIAL THEN cl_abap_context_info=>get_system_date(  ) ELSE ls_parameter-low ).
+          lv_startdate = COND #( WHEN ls_parameter-low IS INITIAL THEN ycl_eho_utils=>get_local_time(  )-date ELSE ls_parameter-low ).
         WHEN 'P_ENDD'.
 *          lv_enddate = COND #( WHEN ls_parameter-low IS INITIAL THEN cl_abap_context_info=>get_system_date(  ) ELSE ls_parameter-low ).
           lv_enddate = COND #( WHEN ls_parameter-low IS INITIAL THEN lv_startdate ELSE ls_parameter-low ).

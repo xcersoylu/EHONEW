@@ -9,7 +9,7 @@
         WHEN 'P_DATE'.
           mv_date = CONV d( ls_parameter-low ).
           IF mv_date IS INITIAL.
-            mv_date = cl_abap_context_info=>get_system_date(  ).
+            mv_date = ycl_eho_utils=>get_local_time(  )-date.
           ENDIF.
       ENDCASE.
     ENDLOOP.

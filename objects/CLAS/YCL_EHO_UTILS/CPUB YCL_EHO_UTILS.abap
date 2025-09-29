@@ -59,3 +59,5 @@ CLASS ycl_eho_utils DEFINITION
         value_type_int           TYPE i
       RETURNING
         VALUE(value_type_string) TYPE string.
+    CLASS-METHODS get_local_time
+      RETURNING VALUE(local_time_info) TYPE ty_local_time_info.
