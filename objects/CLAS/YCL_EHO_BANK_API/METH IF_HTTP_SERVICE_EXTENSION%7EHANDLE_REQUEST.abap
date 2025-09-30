@@ -42,7 +42,7 @@
               INTO lv_message.
       APPEND VALUE #( message = lv_message messagetype = ycl_eho_utils=>mc_error ) TO ms_response-messages.
     ENDIF.
-    IF lv_startdate > ycl_Eho_utils=>get_local_time(  )-date. "cl_abap_context_info=>get_system_date(  ).
+    IF lv_startdate > ycl_eho_utils=>get_local_time(  )-date. "cl_abap_context_info=>get_system_date(  ).
       MESSAGE ID ycl_eho_utils=>mc_message_class
               TYPE ycl_eho_utils=>mc_error
               NUMBER 004
@@ -64,7 +64,7 @@
     FROM @lt_bankpass AS bankpass INNER JOIN i_housebankaccountlinkage AS housebank ON housebank~companycode = bankpass~companycode
                                                                                    AND housebank~glaccount = bankpass~glaccount
     INTO TABLE @DATA(lt_bank_info).
-"tarih aralık olarak girilesede veriler gün gün çekiliyor.
+    "tarih aralık olarak girilesede veriler gün gün çekiliyor.
     IF ms_response-messages IS INITIAL.
       DO.
         IF lv_enddate < lv_startdate.
@@ -110,8 +110,8 @@
                               bank_name           = ycl_eho_utils=>get_bank_name( ls_bankpass-bank_code )
                               branch_code         = ls_bankpass-branch_code
                               branch_name         = lv_branch_name
-                              date                = cl_abap_context_info=>get_system_date( )
-                              time                = cl_abap_context_info=>get_system_time(  )
+                              date                = ycl_eho_utils=>get_local_time(  )-date "cl_abap_context_info=>get_system_date( )
+                              time                = ycl_eho_utils=>get_local_time(  )-time "cl_abap_context_info=>get_system_time(  )
                               original_data       = lv_original_data
                               original_data_type  = 'JSON'  ) TO ms_response-receipt_api_data.
               APPEND LINES OF lt_bank_data TO lt_bank_data_all.
