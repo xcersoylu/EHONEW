@@ -43,7 +43,7 @@
                                                              number = '003' ).
           lo_log->add_item( lo_message ).
         ENDIF.
-        IF lv_startdate > cl_abap_context_info=>get_system_date(  ).
+        IF lv_startdate > ycl_eho_utils=>get_local_time(  )-date. "cl_abap_context_info=>get_system_date(  ).
           lv_error = abap_true.
           lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
                                                              id = ycl_eho_utils=>mc_message_class

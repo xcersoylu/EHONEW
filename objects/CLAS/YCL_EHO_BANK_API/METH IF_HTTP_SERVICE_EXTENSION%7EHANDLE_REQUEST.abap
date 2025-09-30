@@ -42,7 +42,7 @@
               INTO lv_message.
       APPEND VALUE #( message = lv_message messagetype = ycl_eho_utils=>mc_error ) TO ms_response-messages.
     ENDIF.
-    IF lv_startdate > cl_abap_context_info=>get_system_date(  ).
+    IF lv_startdate > ycl_Eho_utils=>get_local_time(  )-date. "cl_abap_context_info=>get_system_date(  ).
       MESSAGE ID ycl_eho_utils=>mc_message_class
               TYPE ycl_eho_utils=>mc_error
               NUMBER 004
