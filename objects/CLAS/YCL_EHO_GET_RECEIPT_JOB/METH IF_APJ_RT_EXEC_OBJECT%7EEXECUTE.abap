@@ -120,7 +120,19 @@
           ENDDO.
           IF lt_bank_data_all IS NOT INITIAL.
             MODIFY yeho_t_offlinedt FROM TABLE @lt_bank_data_all.
-            COMMIT WORK AND WAIT.
+            IF sy-subrc = 0.
+              COMMIT WORK AND WAIT.
+              lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                                 id = ycl_eho_utils=>mc_message_class
+                                                                 number = '020' ).
+              lo_log->add_item( lo_message ).
+            ELSE.
+              lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                                 id = ycl_eho_utils=>mc_message_class
+                                                                 number = '021'
+                                                                 variable_1 = CONV #( sy-subrc ) ).
+              lo_log->add_item( lo_message ).
+            ENDIF.
           ENDIF.
           IF lt_bank_balance_all IS NOT INITIAL.
             MODIFY yeho_t_offlinebd FROM TABLE @lt_bank_balance_all.
