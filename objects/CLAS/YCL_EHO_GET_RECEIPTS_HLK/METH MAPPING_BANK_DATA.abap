@@ -68,6 +68,7 @@
     DATA lv_opening_balance TYPE yeho_e_opening_balance.
     DATA lv_closing_balance TYPE yeho_e_closing_balance.
     DATA lv_json TYPE string.
+    DATA lv_sifir type string VALUE '0.00'.
     lv_json = iv_json.
     REPLACE 'BagliMusteriEkstreSorgulamaResponse' IN lv_json WITH 'response'.
     REPLACE 'BagliMusteriEkstreSorgulamaResult' IN lv_json WITH 'result'.
@@ -97,11 +98,11 @@
       ls_offline_data-sequence_no = lv_sequence_no.
       ls_offline_data-currency    = ms_bankpass-currency.
       ls_offline_data-description = <fs_hareket>-ekstreaciklama.
-      IF <fs_hareket>-harekettutari < 0.
+      IF <fs_hareket>-harekettutari < lv_sifir.
         ls_offline_data-debit_credit = 'B'.
         ls_offline_data-payee_vkn = <fs_hareket>-karsikimlikno.
       ENDIF.
-      IF <fs_hareket>-harekettutari > 0.
+      IF <fs_hareket>-harekettutari > lv_sifir.
         ls_offline_data-debit_credit = 'A'.
         ls_offline_data-debtor_vkn = <fs_hareket>-karsikimlikno.
       ENDIF.
