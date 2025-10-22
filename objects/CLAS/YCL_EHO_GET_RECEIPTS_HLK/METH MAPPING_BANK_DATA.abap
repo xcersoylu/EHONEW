@@ -98,11 +98,12 @@
       ls_offline_data-sequence_no = lv_sequence_no.
       ls_offline_data-currency    = ms_bankpass-currency.
       ls_offline_data-description = <fs_hareket>-ekstreaciklama.
-      IF <fs_hareket>-harekettutari < lv_sifir.
+*      IF <fs_hareket>-harekettutari < lv_sifir.
+      IF <fs_hareket>-harekettutari(1) = '-'.
         ls_offline_data-debit_credit = 'B'.
         ls_offline_data-payee_vkn = <fs_hareket>-karsikimlikno.
       ENDIF.
-      IF <fs_hareket>-harekettutari > lv_sifir.
+      IF <fs_hareket>-harekettutari(1) = '+'.
         ls_offline_data-debit_credit = 'A'.
         ls_offline_data-debtor_vkn = <fs_hareket>-karsikimlikno.
       ENDIF.
