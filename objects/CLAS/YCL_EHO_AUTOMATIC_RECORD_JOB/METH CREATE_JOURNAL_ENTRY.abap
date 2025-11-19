@@ -71,26 +71,26 @@
     DATA lv_taxamount      TYPE yeho_e_wrbtr.
     DATA lv_taxbaseamount  TYPE yeho_e_wrbtr.
     DATA lv_tax_ratio      TYPE yeho_e_tax_ratio.
-    DATA lv_internal_transfer type c LENGTH 1.
-    TRY.
-        DATA(lo_log) = cl_bali_log=>create_with_header( cl_bali_header_setter=>create( object = 'YEHO_APP_LOG'
-                                                                                       subobject = 'YEHO_AUTOMATIC' ) ).
-      CATCH cx_bali_runtime INTO DATA(lx_bali_runtime).
-        DATA(lo_free) = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
-                                                          text     = CONV #( lx_bali_runtime->get_text(  ) ) ).
-        TRY.
-            lo_log->add_item( lo_free ).
-          CATCH cx_bali_runtime INTO lx_bali_runtime.
-            lo_free = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
-                                                             text     = CONV #( lx_bali_runtime->get_text(  ) ) ).
-        ENDTRY.
-    ENDTRY.
+    DATA lv_internal_transfer TYPE c LENGTH 1.
+*    TRY.
+*        DATA(lo_log) = cl_bali_log=>create_with_header( cl_bali_header_setter=>create( object = 'YEHO_APP_LOG'
+*                                                                                       subobject = 'YEHO_AUTOMATIC' ) ).
+*      CATCH cx_bali_runtime INTO DATA(lx_bali_runtime).
+*        DATA(lo_free) = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
+*                                                          text     = CONV #( lx_bali_runtime->get_text(  ) ) ).
+*        TRY.
+*            lo_log->add_item( lo_free ).
+*          CATCH cx_bali_runtime INTO lx_bali_runtime.
+*            lo_free = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
+*                                                             text     = CONV #( lx_bali_runtime->get_text(  ) ) ).
+*        ENDTRY.
+*    ENDTRY.
 
     LOOP AT mt_automatic_items ASSIGNING FIELD-SYMBOL(<ls_item>).
       APPEND INITIAL LINE TO lt_je ASSIGNING FIELD-SYMBOL(<fs_je>).
       TRY.
           <fs_je>-%cid = to_upper( cl_uuid_factory=>create_system_uuid( )->create_uuid_x16( ) ).
-          if <ls_item>-taxcode is NOT INITIAL.
+          IF <ls_item>-taxcode IS NOT INITIAL.
             get_tax_ratio(
               EXPORTING
                 iv_taxcode     = <ls_item>-taxcode
@@ -119,7 +119,7 @@
                                                          currency = <ls_item>-currency
                                                          taxamount = lv_taxamount
                                                          taxbaseamount = lv_taxbaseamount ) ) ) TO lt_taxitem.
-          endif.
+          ENDIF.
           APPEND VALUE #( glaccountlineitem             = |001|
                           glaccount                     = <ls_item>-rule_data-account_no_102
                           assignmentreference           = <ls_item>-rule_data-assignmentreference
@@ -212,9 +212,9 @@
            MAPPED DATA(ls_mapped).
           IF ls_failed IS NOT INITIAL.
             LOOP AT ls_reported-journalentry INTO DATA(ls_reported_line).
-              lo_free = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
+              DATA(lo_free) = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
                                                                 text     = CONV #( ls_reported_line-%msg->if_message~get_text( ) ) ).
-              lo_log->add_item( lo_free ).
+              mo_log->add_item( lo_free ).
             ENDLOOP.
           ELSE.
             COMMIT ENTITIES BEGIN
@@ -227,7 +227,7 @@
                                                                  id = ycl_eho_utils=>mc_message_class
                                                                  number = 016
                                                                  variable_1 = VALUE #( ls_commit_reported-journalentry[ 1 ]-accountingdocument OPTIONAL ) ).
-              lo_log->add_item( lo_message ).
+              mo_log->add_item( lo_message ).
 
               APPEND VALUE #( companycode             = <ls_item>-companycode
                               glaccount               = <ls_item>-glaccount
@@ -241,26 +241,22 @@
               LOOP AT ls_commit_reported-journalentry INTO DATA(ls_commit_reported_line).
                 lo_free = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
                                                                   text     = CONV #( ls_commit_reported_line-%msg->if_message~get_text( ) ) ).
-                lo_log->add_item( lo_free ).
+                mo_log->add_item( lo_free ).
               ENDLOOP.
             ENDIF.
           ENDIF.
           CLEAR : lt_je, lt_glitem , lt_apitem , lt_aritem , ls_failed ,
                   ls_reported , ls_commit_failed , ls_commit_reported , lv_internal_transfer.
         CATCH cx_uuid_error INTO DATA(lx_error).
-        CATCH cx_bali_runtime INTO lx_bali_runtime.
+        CATCH cx_bali_runtime INTO DATA(lx_bali_runtime).
           lo_free = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
                                                             text     = CONV #( lx_error->get_longtext(  ) ) ).
           TRY.
-              lo_log->add_item( lo_free ).
+              mo_log->add_item( lo_free ).
             CATCH cx_bali_runtime INTO lx_bali_runtime.
           ENDTRY.
       ENDTRY.
     ENDLOOP.
-    TRY.
-        cl_bali_log_db=>get_instance( )->save_log( log = lo_log assign_to_current_appl_job = abap_true ).
-      CATCH cx_bali_runtime.
-    ENDTRY.
     IF lt_saved_receipts[] IS NOT INITIAL.
       INSERT yeho_t_savedrcpt FROM TABLE @lt_saved_receipts.
     ENDIF.

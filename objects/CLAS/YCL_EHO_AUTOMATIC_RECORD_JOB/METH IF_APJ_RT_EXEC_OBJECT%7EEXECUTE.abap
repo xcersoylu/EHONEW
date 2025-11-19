@@ -1,4 +1,9 @@
   METHOD if_apj_rt_exec_object~execute.
+    TRY.
+        mo_log = cl_bali_log=>create_with_header( cl_bali_header_setter=>create( object = 'YEHO_APP_LOG'
+                                                                                 subobject = 'YEHO_AUTOMATIC' ) ).
+      CATCH cx_bali_runtime INTO DATA(lx_bali_runtime).
+    ENDTRY.
     LOOP AT it_parameters INTO DATA(ls_parameter).
       CASE ls_parameter-selname.
         WHEN 'P_CCODE'.
@@ -23,11 +28,25 @@
       ENDIF.
     ENDLOOP.
     get_items(  ).
-    IF mt_automatic_items IS NOT INITIAL.
+    IF mt_automatic_items IS INITIAL.
+      DATA(lo_message) = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                         id = ycl_eho_utils=>mc_message_class
+                                                         number = 022 ) .
+      mo_log->add_item( lo_message ).
+    ELSE.
       get_rule( CHANGING ct_items = mt_automatic_items ).
     ENDIF.
     DELETE mt_automatic_items WHERE rule_no IS INITIAL.
-    IF mt_automatic_items IS NOT INITIAL.
+    IF mt_automatic_items IS INITIAL.
+      lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                         id = ycl_eho_utils=>mc_message_class
+                                                         number = 024 ) .
+      mo_log->add_item( lo_message ).
+    ELSE.
       create_journal_entry(  ).
     ENDIF.
+    TRY.
+        cl_bali_log_db=>get_instance( )->save_log( log = mo_log assign_to_current_appl_job = abap_true ).
+      CATCH cx_bali_runtime.
+    ENDTRY.
   ENDMETHOD.

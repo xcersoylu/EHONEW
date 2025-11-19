@@ -58,6 +58,12 @@
           IF <ls_item>-description CP lv_documentitemtext.
             <ls_item>-rule_no = ls_rule-itemno.
             <ls_item>-rule_data = get_rule_data( <ls_item>-rule_no ).
+            DATA(lo_message) = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                               id = ycl_eho_utils=>mc_message_class
+                                                               number = 023
+                                                               variable_1 = <ls_item>-receipt_no
+                                                               variable_2 = CONV #( <ls_item>-rule_no ) ).
+            mo_log->add_item( lo_message ).
             EXIT.
           ENDIF.
         ENDLOOP.

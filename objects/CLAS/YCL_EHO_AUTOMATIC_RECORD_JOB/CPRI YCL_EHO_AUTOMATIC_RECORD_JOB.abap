@@ -3,6 +3,7 @@
     DATA mv_companycode TYPE bukrs.
     DATA mt_glaccount_range TYPE RANGE OF hkont.
     DATA mv_date TYPE d.
+    DATA mo_log TYPE REF TO if_bali_log.
     METHODS get_items.
     METHODS get_rule CHANGING ct_items TYPE yeho_tt_bank_automatic_items.
     METHODS get_rule_data

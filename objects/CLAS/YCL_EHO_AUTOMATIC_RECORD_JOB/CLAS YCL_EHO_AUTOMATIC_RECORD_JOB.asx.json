@@ -118,6 +118,13 @@
    },
    {
     "CLSNAME":"YCL_EHO_AUTOMATIC_RECORD_JOB",
+    "CMPNAME":"MO_LOG",
+    "CMPTYPE":0,
+    "MTDTYPE":0,
+    "MTDTYPE2":0
+   },
+   {
+    "CLSNAME":"YCL_EHO_AUTOMATIC_RECORD_JOB",
     "CMPNAME":"MT_AUTOMATIC_ITEMS",
     "CMPTYPE":0,
     "MTDTYPE":0,
@@ -397,7 +404,7 @@
     "EDITORDER":5,
     "LOCKED":"",
     "DISPID":0,
-    "R3RELEASE":"916",
+    "R3RELEASE":"",
     "AUTHOR":"",
     "CREATEDON":"2025-08-28",
     "CHANGEDBY":"",
@@ -428,6 +435,65 @@
     "TYPDUMMY":"",
     "TYPTYPE":0,
     "TYPE":"",
+    "TABLEOF":"",
+    "SRCROW1":0,
+    "SRCCOLUMN1":0,
+    "SRCROW2":0,
+    "SRCCOLUMN2":0,
+    "REFCLSNAME":"",
+    "REFINTNAME":"",
+    "REFCMPNAME":"",
+    "BCMTDINST":"",
+    "BCMTDCAT":0,
+    "BCMTDDIA":"",
+    "BCMTDCOM":"",
+    "BCMTDSYN":0,
+    "BCEVTCAT":0,
+    "TYPESRC_LENG":0,
+    "TYPESRC":""
+   },
+   {
+    "CLSNAME":"YCL_EHO_AUTOMATIC_RECORD_JOB",
+    "CMPNAME":"MO_LOG",
+    "VERSION":1,
+    "ALIAS":"",
+    "REDEFIN":"",
+    "EXPOSURE":0,
+    "STATE":1,
+    "EDITORDER":5,
+    "LOCKED":"",
+    "DISPID":0,
+    "R3RELEASE":"",
+    "AUTHOR":"",
+    "CREATEDON":"2025-11-19",
+    "CHANGEDBY":"",
+    "CHANGEDON":"0000-00-00",
+    "MTDDECLTYP":0,
+    "MTDABSTRCT":"",
+    "MTDFINAL":"",
+    "DSRNOTEOM":"",
+    "EDTX":"",
+    "MTDNEWEXC":"",
+    "MTDREPLACE":"",
+    "MTDOPTNL":"",
+    "MTDSQLSERVICE":"",
+    "MTDAMDPRDONLY":"",
+    "MTDAMDPCDSCLNT":"",
+    "MTDAMDPCLNTINDEP":"",
+    "ATTDECLTYP":0,
+    "ATTDYNAMIC":"",
+    "ATTGETMTD":"",
+    "ATTSETMTD":"",
+    "ATTRDONLY":"",
+    "ATTVALUE":"",
+    "ATTPERSIST":"",
+    "ATTBUSOBJ":"",
+    "ATTKEYFLD":"",
+    "ATTEXPVIRT":0,
+    "EVTDECLTYP":0,
+    "TYPDUMMY":"",
+    "TYPTYPE":3,
+    "TYPE":"IF_BALI_LOG",
     "TABLEOF":"",
     "SRCROW1":0,
     "SRCCOLUMN1":0,
@@ -719,6 +785,12 @@
    },
    {
     "CLSNAME":"YCL_EHO_AUTOMATIC_RECORD_JOB",
+    "CMPNAME":"MO_LOG",
+    "LANGU":"T",
+    "DESCRIPT":""
+   },
+   {
+    "CLSNAME":"YCL_EHO_AUTOMATIC_RECORD_JOB",
     "CMPNAME":"MT_AUTOMATIC_ITEMS",
     "LANGU":"T",
     "DESCRIPT":""
@@ -740,6 +812,19 @@
     "CMPNAME":"MV_DATE",
     "LANGU":"T",
     "DESCRIPT":""
+   }
+  ]
+ },
+ {
+  "table":"SEOIMPLREL",
+  "data":
+  [
+   {
+    "CLSNAME":"YCL_EHO_AUTOMATIC_RECORD_JOB",
+    "CMPNAME":"MO_LOG",
+    "VERSION":1,
+    "REFCLSNAME":"IF_BALI_LOG",
+    "IRLTYPE":0
    }
   ]
  },
