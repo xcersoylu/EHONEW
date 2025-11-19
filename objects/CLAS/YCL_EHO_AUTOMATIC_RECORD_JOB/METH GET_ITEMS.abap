@@ -20,11 +20,36 @@
        WHERE bkpf~postingdate = @mv_date
          AND bkpf~isreversal = ''
          AND bkpf~isreversed = ''
+         AND bkpf~companycode = @mv_companycode
          INTO TABLE @DATA(lt_manual_documents).
 
 ****şirket kendi hesabından kendine yollamışsa bir bankadan kayıt atıldığı zaman diğerinden atılmaması için
-****başlıktaki JrnlEntryCntrySpecificRef1 alanına YEHO yazılarak bu belgeler de manuel kayıt atılmış gibi davrandırıldı.
+*****başlıktaki JrnlEntryCntrySpecificRef1 alanına YEHO yazılarak bu belgeler de manuel kayıt atılmış gibi davrandırıldı.
+*
+*    SELECT bseg~companycode,
+*           bseg~accountingdocument,
+*           bseg~fiscalyear,
+*           bseg~accountingdocumentitem,
+*           bkpf~postingdate,
+*           bseg~absoluteamountintransaccrcy,
+*           bseg~transactioncurrency,
+*           bseg~glaccount,
+*           bseg~debitcreditcode,
+*           bkpf~transactioncode,
+*           bkpf~accountingdoccreatedbyuser
+*       FROM yeho_t_amounttc AS amounttc INNER JOIN i_journalentry AS bkpf ON bkpf~companycode = amounttc~companycode
+*                                                                         AND bkpf~accountingdocumenttype = amounttc~document_type
+*                                                                         AND bkpf~jrnlentrycntryspecificref1 = amounttc~transaction_code
+*                                        INNER JOIN i_operationalacctgdocitem AS bseg ON bseg~companycode = bkpf~companycode
+*                                                                                    AND bseg~accountingdocument = bkpf~accountingdocument
+*                                                                                    AND bseg~fiscalyear = bkpf~fiscalyear
+*       WHERE bkpf~postingdate = @mv_date
+*         AND bkpf~isreversal = ''
+*         AND bkpf~isreversed = ''
+*         AND amounttc~transaction_code = @ycl_eho_utils=>mv_eho_tcode
+*         APPENDING TABLE @lt_manual_documents.
 
+****şirket kendi hesabından kendine yollamışsa bir bankadan kayıt atıldığı zaman diğerinden atılmaması için
     SELECT bseg~companycode,
            bseg~accountingdocument,
            bseg~fiscalyear,
@@ -36,19 +61,18 @@
            bseg~debitcreditcode,
            bkpf~transactioncode,
            bkpf~accountingdoccreatedbyuser
-       FROM yeho_t_amounttc AS amounttc INNER JOIN i_journalentry AS bkpf ON bkpf~companycode = amounttc~companycode
-                                                                         AND bkpf~accountingdocumenttype = amounttc~document_type
-                                                                         AND bkpf~jrnlentrycntryspecificref1 = amounttc~transaction_code
+       FROM yeho_t_savedrcpt AS savedrcpt INNER JOIN i_journalentry AS bkpf ON bkpf~companycode = savedrcpt~companycode
+                                                                         AND bkpf~accountingdocument = savedrcpt~accountingdocument
+                                                                         AND bkpf~fiscalyear = savedrcpt~fiscal_year
                                         INNER JOIN i_operationalacctgdocitem AS bseg ON bseg~companycode = bkpf~companycode
                                                                                     AND bseg~accountingdocument = bkpf~accountingdocument
                                                                                     AND bseg~fiscalyear = bkpf~fiscalyear
-       WHERE bkpf~postingdate = @mv_date
+       WHERE bkpf~postingdate = @mv_Date
          AND bkpf~isreversal = ''
          AND bkpf~isreversed = ''
-         AND amounttc~transaction_code = @ycl_eho_utils=>mv_eho_tcode
+         AND savedrcpt~internal_transfer = @abap_true
+         AND bkpf~companycode = @mv_companycode
          APPENDING TABLE @lt_manual_documents.
-
-
 
     SELECT *
       FROM yeho_t_offlinedt

@@ -32,10 +32,9 @@
        WHERE bkpf~postingdate IN @ms_request-date
          AND bkpf~isreversal = ''
          AND bkpf~isreversed = ''
+         AND bkpf~companycode = @ms_Request-companycode
          INTO TABLE @DATA(lt_manual_documents).
 ****şirket kendi hesabından kendine yollamışsa bir bankadan kayıt atıldığı zaman diğerinden atılmaması için
-****başlıktaki JrnlEntryCntrySpecificRef1 alanına YEHO yazılarak bu belgeler de manuel kayıt atılmış gibi davrandırıldı.
-
     SELECT bseg~companycode,
            bseg~accountingdocument,
            bseg~fiscalyear,
@@ -57,6 +56,7 @@
          AND bkpf~isreversal = ''
          AND bkpf~isreversed = ''
          AND savedrcpt~internal_transfer = @abap_true
+         AND bkpf~companycode = @ms_request-companycode
          APPENDING TABLE @lt_manual_documents.
 
 ***

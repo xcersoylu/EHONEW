@@ -72,20 +72,6 @@
     DATA lv_taxbaseamount  TYPE yeho_e_wrbtr.
     DATA lv_tax_ratio      TYPE yeho_e_tax_ratio.
     DATA lv_internal_transfer TYPE c LENGTH 1.
-*    TRY.
-*        DATA(lo_log) = cl_bali_log=>create_with_header( cl_bali_header_setter=>create( object = 'YEHO_APP_LOG'
-*                                                                                       subobject = 'YEHO_AUTOMATIC' ) ).
-*      CATCH cx_bali_runtime INTO DATA(lx_bali_runtime).
-*        DATA(lo_free) = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
-*                                                          text     = CONV #( lx_bali_runtime->get_text(  ) ) ).
-*        TRY.
-*            lo_log->add_item( lo_free ).
-*          CATCH cx_bali_runtime INTO lx_bali_runtime.
-*            lo_free = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
-*                                                             text     = CONV #( lx_bali_runtime->get_text(  ) ) ).
-*        ENDTRY.
-*    ENDTRY.
-
     LOOP AT mt_automatic_items ASSIGNING FIELD-SYMBOL(<ls_item>).
       APPEND INITIAL LINE TO lt_je ASSIGNING FIELD-SYMBOL(<fs_je>).
       TRY.
