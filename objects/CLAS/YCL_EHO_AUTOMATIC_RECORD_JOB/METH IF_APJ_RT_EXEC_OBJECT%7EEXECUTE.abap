@@ -13,11 +13,17 @@
           <ls_glaccount_range> = CORRESPONDING #( ls_parameter ).
         WHEN 'P_DATE'.
           mv_date = CONV d( ls_parameter-low ).
-          IF mv_date IS INITIAL.
+          IF mv_date IS INITIAL OR mv_date = '00000000'.
             mv_date = ycl_eho_utils=>get_local_time(  )-date.
           ENDIF.
       ENDCASE.
     ENDLOOP.
+
+    DATA(lo_message) = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                       id = ycl_eho_utils=>mc_message_class
+                                                       number = 001
+                                                       variable_1 = |Job çalışma tarihi { mv_date }| ).
+    mo_log->add_item( lo_message ).
 
     LOOP AT mt_glaccount_range ASSIGNING FIELD-SYMBOL(<ls_glaccount>).
       IF <ls_glaccount>-low IS NOT INITIAL.
@@ -29,7 +35,7 @@
     ENDLOOP.
     get_items(  ).
     IF mt_automatic_items IS INITIAL.
-      DATA(lo_message) = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
+      lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
                                                          id = ycl_eho_utils=>mc_message_class
                                                          number = 022 ) .
       mo_log->add_item( lo_message ).

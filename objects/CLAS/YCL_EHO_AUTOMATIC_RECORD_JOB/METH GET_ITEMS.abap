@@ -67,7 +67,7 @@
                                         INNER JOIN i_operationalacctgdocitem AS bseg ON bseg~companycode = bkpf~companycode
                                                                                     AND bseg~accountingdocument = bkpf~accountingdocument
                                                                                     AND bseg~fiscalyear = bkpf~fiscalyear
-       WHERE bkpf~postingdate = @mv_Date
+       WHERE bkpf~postingdate = @mv_date
          AND bkpf~isreversal = ''
          AND bkpf~isreversed = ''
          AND savedrcpt~internal_transfer = @abap_true
