@@ -18,7 +18,9 @@
           ENDIF.
       ENDCASE.
     ENDLOOP.
-
+    IF mv_date IS INITIAL OR mv_date = '00000000'.
+      mv_date = ycl_eho_utils=>get_local_time(  )-date.
+    ENDIF.
     DATA(lo_message) = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
                                                        id = ycl_eho_utils=>mc_message_class
                                                        number = 001
