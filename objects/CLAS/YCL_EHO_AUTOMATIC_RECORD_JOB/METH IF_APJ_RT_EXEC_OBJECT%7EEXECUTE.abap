@@ -12,10 +12,7 @@
           APPEND INITIAL LINE TO mt_glaccount_range ASSIGNING FIELD-SYMBOL(<ls_glaccount_range>).
           <ls_glaccount_range> = CORRESPONDING #( ls_parameter ).
         WHEN 'P_DATE'.
-          mv_date = CONV d( ls_parameter-low ).
-          IF mv_date IS INITIAL OR mv_date = '00000000'.
-            mv_date = ycl_eho_utils=>get_local_time(  )-date.
-          ENDIF.
+          mv_date = COND #( WHEN ls_parameter-low IS INITIAL THEN ycl_eho_utils=>get_local_time(  )-date ELSE ls_parameter-low ).
       ENDCASE.
     ENDLOOP.
     IF mv_date IS INITIAL OR mv_date = '00000000'.
