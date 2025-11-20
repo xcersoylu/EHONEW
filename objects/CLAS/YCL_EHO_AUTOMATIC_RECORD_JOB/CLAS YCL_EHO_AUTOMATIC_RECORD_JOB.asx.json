@@ -729,7 +729,7 @@
     "EVTDECLTYP":0,
     "TYPDUMMY":"",
     "TYPTYPE":1,
-    "TYPE":"D",
+    "TYPE":"DATUM",
     "TABLEOF":"",
     "SRCROW1":0,
     "SRCCOLUMN1":0,

@@ -24,7 +24,7 @@
     DATA(lo_message) = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
                                                        id = ycl_eho_utils=>mc_message_class
                                                        number = 001
-                                                       variable_1 = |Job çalışma tarihi { mv_date }| ).
+                                                       variable_1 = conv #( mv_date ) ).
     mo_log->add_item( lo_message ).
 
     LOOP AT mt_glaccount_range ASSIGNING FIELD-SYMBOL(<ls_glaccount>).
