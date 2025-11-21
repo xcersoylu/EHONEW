@@ -18,6 +18,7 @@
               orderid                       TYPE aufnr,
               documentitemtext              TYPE sgtxt,
               specialglcode                 TYPE yeho_e_umskz,
+              taxcode                       TYPE mwskz,
               _currencyamount               TYPE tt_currencyamount,
             END OF ty_glitem,
             BEGIN OF ty_aritems, "kunnr
@@ -169,6 +170,7 @@
                             orderid                       = <ls_item>-rule_data-orderid
                             documentitemtext              = <ls_item>-rule_data-documentitemtext_2
                             specialglcode                 = <ls_item>-rule_data-specialglcode
+                            taxcode                       = <ls_item>-rule_data-taxcode
                             _currencyamount = VALUE #( ( currencyrole = '00'
                                                         journalentryitemamount = COND #( WHEN <ls_item>-taxcode IS INITIAL
                                                                                          THEN <ls_item>-amount * -1

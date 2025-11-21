@@ -18,12 +18,6 @@
     IF mv_date IS INITIAL OR mv_date = '00000000'.
       mv_date = ycl_eho_utils=>get_local_time(  )-date.
     ENDIF.
-    DATA(lo_message) = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
-                                                       id = ycl_eho_utils=>mc_message_class
-                                                       number = 001
-                                                       variable_1 = conv #( mv_date ) ).
-    mo_log->add_item( lo_message ).
-
     LOOP AT mt_glaccount_range ASSIGNING FIELD-SYMBOL(<ls_glaccount>).
       IF <ls_glaccount>-low IS NOT INITIAL.
         <ls_glaccount>-low = |{ <ls_glaccount>-low ALPHA = IN }|.
@@ -34,7 +28,7 @@
     ENDLOOP.
     get_items(  ).
     IF mt_automatic_items IS INITIAL.
-      lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
+      DATA(lo_message) = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
                                                          id = ycl_eho_utils=>mc_message_class
                                                          number = 022 ) .
       mo_log->add_item( lo_message ).
