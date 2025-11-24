@@ -77,11 +77,11 @@
       APPEND INITIAL LINE TO lt_je ASSIGNING FIELD-SYMBOL(<fs_je>).
       TRY.
           <fs_je>-%cid = to_upper( cl_uuid_factory=>create_system_uuid( )->create_uuid_x16( ) ).
-          IF <ls_item>-rule_Data-taxcode IS NOT INITIAL.
+          IF <ls_item>-rule_data-taxcode IS NOT INITIAL.
             get_tax_ratio(
               EXPORTING
                 iv_taxcode     = <ls_item>-rule_data-taxcode
-                iv_companycode = <ls_item>-rule_Data-companycode
+                iv_companycode = <ls_item>-rule_data-companycode
               RECEIVING
                 rv_ratio       = lv_tax_ratio
             ).

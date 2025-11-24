@@ -45,6 +45,7 @@
               INTO TABLE @DATA(lt_rules).
     IF sy-subrc = 0.
       LOOP AT ct_items ASSIGNING FIELD-SYMBOL(<ls_item>).
+        CLEAR : lr_glaccount , lr_transaction_type , lr_tax_number , lr_iban.
         APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_item>-glaccount ) TO lr_glaccount.
         APPEND VALUE #( sign = 'I' option = 'EQ' low = '*' ) TO lr_glaccount.
         APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_item>-transaction_type ) TO lr_transaction_type.
