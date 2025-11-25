@@ -15,6 +15,7 @@
               reference2idbybusinesspartner TYPE xref2,
               reference3idbybusinesspartner TYPE xref3,
               costcenter                    TYPE kostl,
+              profitcenter                  TYPE prctr,
               orderid                       TYPE aufnr,
               documentitemtext              TYPE sgtxt,
               specialglcode                 TYPE yeho_e_umskz,
@@ -167,6 +168,7 @@
                             reference2idbybusinesspartner = <ls_item>-rule_data-reference2idbybusinesspartner
                             reference3idbybusinesspartner = <ls_item>-rule_data-reference3idbybusinesspartner
                             costcenter                    = <ls_item>-rule_data-costcenter
+                            profitcenter                  = <ls_item>-rule_data-profitcenter
                             orderid                       = <ls_item>-rule_data-orderid
                             documentitemtext              = <ls_item>-rule_data-documentitemtext_2
                             specialglcode                 = <ls_item>-rule_data-specialglcode
