@@ -45,7 +45,8 @@
            bseg~glaccount,
            bseg~debitcreditcode,
            bkpf~transactioncode,
-           bkpf~accountingdoccreatedbyuser
+           bkpf~accountingdoccreatedbyuser,
+           ' ' as delete
        FROM yeho_t_savedrcpt AS savedrcpt INNER JOIN i_journalentry AS bkpf ON bkpf~companycode = savedrcpt~companycode
                                                                          AND bkpf~accountingdocument = savedrcpt~accountingdocument
                                                                          AND bkpf~fiscalyear = savedrcpt~fiscal_year
@@ -163,13 +164,15 @@
               ENDIF.
 *virman olabilir mi ?
               IF <ls_item>-manualrecord IS INITIAL.
-                READ TABLE lt_virman INTO DATA(ls_virman)
+                READ TABLE lt_virman asSIGNING fIELD-SYMBOL(<ls_virman>)
                                                WITH KEY glaccount = <ls_item>-glaccount
                                                         postingdate = <ls_item>-physical_operation_date
                                                         absoluteamountintransaccrcy = abs( <ls_item>-amount ).
                 IF sy-subrc = 0.
+                  <ls_virman>-delete = abap_True.
                   <ls_item>-manualrecord = abap_true.
                 ENDIF.
+                DELETE lt_virman WHERE delete = abap_true.
               ENDIF.
             ENDLOOP.
             DELETE ms_response-items WHERE manualrecord = abap_true.
@@ -220,16 +223,18 @@
             ENDIF.
 *virman olabilir mi ?
             IF <ls_item>-manualrecord IS INITIAL.
-              READ TABLE lt_virman INTO ls_virman
+              READ TABLE lt_virman asSIGNING <ls_virman>
                                              WITH KEY glaccount = <ls_item>-glaccount
                                                       postingdate = <ls_item>-physical_operation_date
                                                       absoluteamountintransaccrcy = abs( <ls_item>-amount ).
               IF sy-subrc = 0.
+                <ls_virman>-delete = abap_true.
                 <ls_item>-manualrecord = abap_true.
-                <ls_item>-username = ls_virman-accountingdoccreatedbyuser.
-                <ls_item>-accountingdocument = ls_virman-accountingdocument.
-                <ls_item>-fiscal_year = ls_virman-fiscalyear.
+                <ls_item>-username = <ls_virman>-accountingdoccreatedbyuser.
+                <ls_item>-accountingdocument = <ls_virman>-accountingdocument.
+                <ls_item>-fiscal_year = <ls_virman>-fiscalyear.
               ENDIF.
+              delete lt_virman wHERE delete = abap_true.
             ENDIF.
           ENDLOOP.
           DELETE ms_response-items WHERE accountingdocument IS INITIAL AND manualrecord IS INITIAL.
@@ -280,16 +285,18 @@
             ENDIF.
 *virman olabilir mi ?
             IF <ls_item>-manualrecord IS INITIAL.
-              READ TABLE lt_virman INTO ls_virman
+              READ TABLE lt_virman asSIGNING <ls_virman>
                                              WITH KEY glaccount = <ls_item>-glaccount
                                                       postingdate = <ls_item>-physical_operation_date
                                                       absoluteamountintransaccrcy = abs( <ls_item>-amount ).
               IF sy-subrc = 0.
+                <ls_virman>-delete = abap_True.
                 <ls_item>-manualrecord = abap_true.
-                <ls_item>-username = ls_virman-accountingdoccreatedbyuser.
-                <ls_item>-accountingdocument = ls_virman-accountingdocument.
-                <ls_item>-fiscal_year = ls_virman-fiscalyear.
+                <ls_item>-username = <ls_virman>-accountingdoccreatedbyuser.
+                <ls_item>-accountingdocument = <ls_virman>-accountingdocument.
+                <ls_item>-fiscal_year = <ls_virman>-fiscalyear.
               ENDIF.
+              delete lt_virman wHERE delete = abap_true.
             ENDIF.
           ENDLOOP.
       ENDCASE.
