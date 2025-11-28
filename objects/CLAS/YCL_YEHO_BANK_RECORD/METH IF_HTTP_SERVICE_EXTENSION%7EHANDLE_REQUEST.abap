@@ -32,7 +32,7 @@
        WHERE bkpf~postingdate IN @ms_request-date
          AND bkpf~isreversal = ''
          AND bkpf~isreversed = ''
-         AND bkpf~companycode = @ms_Request-companycode
+         AND bkpf~companycode = @ms_request-companycode
          INTO TABLE @DATA(lt_manual_documents).
 ****şirket kendi hesabından kendine yollamışsa bir bankadan kayıt atıldığı zaman diğerinden atılmaması için
     SELECT bseg~companycode,
@@ -52,13 +52,14 @@
                                         INNER JOIN i_operationalacctgdocitem AS bseg ON bseg~companycode = bkpf~companycode
                                                                                     AND bseg~accountingdocument = bkpf~accountingdocument
                                                                                     AND bseg~fiscalyear = bkpf~fiscalyear
+                                                                                    AND bseg~glaccount <> savedrcpt~glaccount
        WHERE bkpf~postingdate IN @ms_request-date
          AND bkpf~isreversal = ''
          AND bkpf~isreversed = ''
          AND savedrcpt~internal_transfer = @abap_true
          AND bkpf~companycode = @ms_request-companycode
-         APPENDING TABLE @lt_manual_documents.
-
+         INTO TABLE @DATA(lt_virman).
+* FI belgesinin karşı bacağı okundu çünkü kendine aitse belge zaten aşağıda buluyor.
 ***
     SELECT companycode,
            glaccount
@@ -160,6 +161,16 @@
                   <ls_item>-manualrecord = abap_true.
                 ENDIF.
               ENDIF.
+*virman olabilir mi ?
+              IF <ls_item>-manualrecord IS INITIAL.
+                READ TABLE lt_virman INTO DATA(ls_virman)
+                                               WITH KEY glaccount = <ls_item>-glaccount
+                                                        postingdate = <ls_item>-physical_operation_date
+                                                        absoluteamountintransaccrcy = abs( <ls_item>-amount ).
+                IF sy-subrc = 0.
+                  <ls_item>-manualrecord = abap_true.
+                ENDIF.
+              ENDIF.
             ENDLOOP.
             DELETE ms_response-items WHERE manualrecord = abap_true.
           ENDIF.
@@ -173,15 +184,6 @@
              AND offlinedata~glaccount IN @ms_request-glaccount
              AND offlinedata~physical_operation_date IN @ms_request-date
              INTO CORRESPONDING FIELDS OF TABLE @ms_response-items.
-*          if ms_response-items is NOT INITIAL.
-*            SELECT mandoc~*
-*              FROM @ms_response-items AS items INNER JOIN yeho_t_mandoc AS mandoc ON mandoc~companycode = items~companycode
-*                                                                                AND mandoc~glaccount = items~glaccount
-*                                                                                AND mandoc~receipt_no = items~receipt_no
-*                                                                                AND mandoc~physical_operation_date = items~physical_operation_date
-*             ORDER BY mandoc~companycode,mandoc~glaccount,mandoc~receipt_no,mandoc~physical_operation_date
-*             INTO TABLE @lt_mandoc_db.
-*          endif.
           DATA(lt_items) = ms_response-items.
           DELETE lt_items WHERE accountingdocument IS NOT INITIAL.
           IF lt_items IS NOT INITIAL.
@@ -192,13 +194,6 @@
                                                                                 AND mandoc~physical_operation_date = items~physical_operation_date
              ORDER BY mandoc~companycode,mandoc~glaccount,mandoc~receipt_no,mandoc~physical_operation_date
              INTO TABLE @lt_mandoc_db.
-*          ELSE.
-*            SELECT *
-*              FROM yeho_t_mandoc
-*              WHERE companycode = @ms_request-companycode
-*                AND glaccount IN @ms_request-glaccount
-*                ORDER BY companycode,glaccount,receipt_no,physical_operation_date
-*                INTO TABLE @lt_mandoc_db.
           ENDIF.
           LOOP AT ms_response-items ASSIGNING <ls_item> WHERE accountingdocument IS INITIAL.
             READ TABLE lt_manual_documents INTO ls_manual_document
@@ -223,6 +218,19 @@
                 <ls_item>-fiscal_year = ls_mandoc_db-fiscalyear.
               ENDIF.
             ENDIF.
+*virman olabilir mi ?
+            IF <ls_item>-manualrecord IS INITIAL.
+              READ TABLE lt_virman INTO ls_virman
+                                             WITH KEY glaccount = <ls_item>-glaccount
+                                                      postingdate = <ls_item>-physical_operation_date
+                                                      absoluteamountintransaccrcy = abs( <ls_item>-amount ).
+              IF sy-subrc = 0.
+                <ls_item>-manualrecord = abap_true.
+                <ls_item>-username = ls_virman-accountingdoccreatedbyuser.
+                <ls_item>-accountingdocument = ls_virman-accountingdocument.
+                <ls_item>-fiscal_year = ls_virman-fiscalyear.
+              ENDIF.
+            ENDIF.
           ENDLOOP.
           DELETE ms_response-items WHERE accountingdocument IS INITIAL AND manualrecord IS INITIAL.
         WHEN '3'. "tümü
@@ -235,15 +243,6 @@
              AND offlinedata~glaccount IN @ms_request-glaccount
              AND offlinedata~physical_operation_date IN @ms_request-date
              INTO CORRESPONDING FIELDS OF TABLE @ms_response-items.
-*          if ms_response-items is NOT INITIAL.
-*            SELECT mandoc~*
-*              FROM @ms_response-items AS items INNER JOIN yeho_t_mandoc AS mandoc ON mandoc~companycode = items~companycode
-*                                                                                AND mandoc~glaccount = items~glaccount
-*                                                                                AND mandoc~receipt_no = items~receipt_no
-*                                                                                AND mandoc~physical_operation_date = items~physical_operation_date
-*             ORDER BY mandoc~companycode,mandoc~glaccount,mandoc~receipt_no,mandoc~physical_operation_date
-*             INTO TABLE @lt_mandoc_db.
-*          endif.
           lt_items = ms_response-items.
           DELETE lt_items WHERE accountingdocument IS NOT INITIAL.
           IF lt_items IS NOT INITIAL.
@@ -254,13 +253,6 @@
                                                                                 AND mandoc~physical_operation_date = items~physical_operation_date
              ORDER BY mandoc~companycode,mandoc~glaccount,mandoc~receipt_no,mandoc~physical_operation_date
              INTO TABLE @lt_mandoc_db.
-*          ELSE.
-*            SELECT *
-*              FROM yeho_t_mandoc
-*              WHERE companycode = @ms_request-companycode
-*                AND glaccount IN @ms_request-glaccount
-*                ORDER BY companycode,glaccount,receipt_no,physical_operation_date
-*                INTO TABLE @lt_mandoc_db.
           ENDIF.
 
           LOOP AT ms_response-items ASSIGNING <ls_item> WHERE accountingdocument IS INITIAL.
@@ -284,6 +276,19 @@
                 <ls_item>-manualrecord = abap_true.
                 <ls_item>-accountingdocument = ls_mandoc_db-accountingdocument.
                 <ls_item>-fiscal_year = ls_mandoc_db-fiscalyear.
+              ENDIF.
+            ENDIF.
+*virman olabilir mi ?
+            IF <ls_item>-manualrecord IS INITIAL.
+              READ TABLE lt_virman INTO ls_virman
+                                             WITH KEY glaccount = <ls_item>-glaccount
+                                                      postingdate = <ls_item>-physical_operation_date
+                                                      absoluteamountintransaccrcy = abs( <ls_item>-amount ).
+              IF sy-subrc = 0.
+                <ls_item>-manualrecord = abap_true.
+                <ls_item>-username = ls_virman-accountingdoccreatedbyuser.
+                <ls_item>-accountingdocument = ls_virman-accountingdocument.
+                <ls_item>-fiscal_year = ls_virman-fiscalyear.
               ENDIF.
             ENDIF.
           ENDLOOP.
