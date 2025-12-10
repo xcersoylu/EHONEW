@@ -22,6 +22,9 @@ CLASS ycl_eho_utils DEFINITION
                 iv_bank_code          TYPE yeho_e_bank_code
                 iv_branch_code        TYPE yeho_e_branch_code
       RETURNING VALUE(rv_branch_name) TYPE yeho_e_branchnamedescription.
+    CLASS-METHODS generate_random IMPORTING iv_randomset     TYPE string
+                                            iv_length        TYPE i
+                                  RETURNING VALUE(rv_string) TYPE string.
     CONSTANTS mc_message_class TYPE symsgid VALUE 'YEHO_MC'.
     CONSTANTS mc_information TYPE symsgty VALUE 'I'.
     CONSTANTS mc_success TYPE symsgty VALUE 'S'.
