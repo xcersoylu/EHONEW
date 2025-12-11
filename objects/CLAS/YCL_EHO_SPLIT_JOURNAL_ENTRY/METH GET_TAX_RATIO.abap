@@ -5,6 +5,6 @@
         WHERE t001~companycode = @iv_companycode
           AND taxratio~taxcode = @iv_taxcode
           AND taxratio~cndnrecordvalidityenddate >= @lv_datum
-          AND taxratio~cndnrecordvaliditystartdate >= @lv_datum
+          AND taxratio~cndnrecordvaliditystartdate <= @lv_datum
     INTO CORRESPONDING FIELDS OF @rs_taxinfo.
   ENDMETHOD.
