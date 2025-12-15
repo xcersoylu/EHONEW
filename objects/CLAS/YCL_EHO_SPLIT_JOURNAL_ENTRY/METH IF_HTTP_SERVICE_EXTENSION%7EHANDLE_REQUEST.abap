@@ -18,6 +18,7 @@
               orderid                       TYPE aufnr,
               specialglcode                 TYPE yeho_e_umskz,
               documentitemtext              TYPE sgtxt,
+              taxcode                       TYPE mwskz,
               _currencyamount               TYPE tt_currencyamount,
             END OF ty_glitem,
             BEGIN OF ty_aritems, "kunnr
@@ -165,6 +166,7 @@
                               orderid                       = ls_split_item-orderid
                               specialglcode                 = ls_split_item-specialglcode
                               documentitemtext              = ls_split_item-documentitemtext
+                              taxcode                       = ls_split_item-taxcode
                               _currencyamount = VALUE #( ( currencyrole = '00'
                                                           journalentryitemamount = lv_taxbaseamount
                                                           currency = ls_split_item-currency  ) )          ) TO lt_glitem.
@@ -209,6 +211,7 @@
                                   documentdate                 = ms_request-selected_line-physical_operation_date
                                   postingdate                  = ms_request-selected_line-physical_operation_date
                                   accountingdocumentheadertext = ms_request-document_header-accountingdocumentheadertext
+                                  taxdeterminationdate         = cl_abap_context_info=>get_system_date( )
                                   _apitems                     = VALUE #( FOR wa_apitem  IN lt_apitem  ( CORRESPONDING #( wa_apitem  MAPPING _currencyamount = _currencyamount ) ) )
                                   _aritems                     = VALUE #( FOR wa_aritem  IN lt_aritem  ( CORRESPONDING #( wa_aritem  MAPPING _currencyamount = _currencyamount ) ) )
                                   _glitems                     = VALUE #( FOR wa_glitem  IN lt_glitem  ( CORRESPONDING #( wa_glitem  MAPPING _currencyamount = _currencyamount ) ) )
