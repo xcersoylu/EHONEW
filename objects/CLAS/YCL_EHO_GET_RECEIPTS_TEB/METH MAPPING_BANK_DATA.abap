@@ -26,14 +26,13 @@
 
       LOOP AT lt_xml INTO DATA(ls_xml_line) WHERE name = 'DETAY'
                                               AND node_type = 'CO_NT_ELEMENT_OPEN'.
-
+        DATA(lv_index) = sy-tabix + 1.
         APPEND INITIAL LINE TO et_bank_data ASSIGNING FIELD-SYMBOL(<ls_bank_data>).
         lv_sequence_no += 1.
         <ls_bank_data>-companycode = ms_bankpass-companycode.
         <ls_bank_data>-glaccount   = ms_bankpass-glaccount.
         <ls_bank_data>-sequence_no = lv_sequence_no.
         <ls_bank_data>-currency    = ms_bankpass-currency.
-        DATA(lv_index) = sy-tabix + 1.
         LOOP AT lt_xml INTO DATA(ls_xml_line2) FROM lv_index.
           IF ( ls_xml_line2-name = 'DETAY' AND ls_xml_line2-node_type = 'CO_NT_ELEMENT_CLOSE' ).
             EXIT.
