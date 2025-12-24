@@ -11,6 +11,7 @@ authorization master ( instance )
   update;
   delete;
   field ( readonly :update ) Companycode, Itemno;
+  field ( mandatory ) Documentitemtext1, Documentitemtext2;
   mapping for yeho_t_rules
     {
       Companycode                   = companycode;
