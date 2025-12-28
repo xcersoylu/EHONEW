@@ -68,10 +68,16 @@
     DATA lv_opening_balance TYPE yeho_e_opening_balance.
     DATA lv_closing_balance TYPE yeho_e_closing_balance.
     DATA lv_json TYPE string.
-    DATA lv_sifir type string VALUE '0.00'.
+    DATA lv_sifir TYPE string VALUE '0.00'.
     lv_json = iv_json.
-    REPLACE 'BagliMusteriEkstreSorgulamaResponse' IN lv_json WITH 'response'.
-    REPLACE 'BagliMusteriEkstreSorgulamaResult' IN lv_json WITH 'result'.
+    CASE ms_bankpass-additional_field1.
+      WHEN 'BagliMusteriEkstreSorgulama'.
+        REPLACE 'BagliMusteriEkstreSorgulamaResponse' IN lv_json WITH 'response'.
+        REPLACE 'BagliMusteriEkstreSorgulamaResult' IN lv_json WITH 'result'.
+      WHEN 'EkstreSorgulama'.
+        REPLACE 'EkstreSorgulamaResponse' IN lv_json WITH 'response'.
+        REPLACE 'EkstreSorgulamaResult' IN lv_json WITH 'result'.
+    ENDCASE.
     /ui2/cl_json=>deserialize( EXPORTING json = lv_json CHANGING data = ls_json_response ).
 
     IF ls_json_response-response-result-hatakodu <> '0'.
@@ -134,7 +140,7 @@
       ELSE.
         lv_opening_balance = ls_bank_data-current_balance - ls_bank_data-amount.
       ENDIF.
-      SORT lt_bank_data BY sequence_no desCENDING.
+      SORT lt_bank_data BY sequence_no DESCENDING.
       READ TABLE lt_bank_data INTO ls_bank_data INDEX 1.
       lv_closing_balance = ls_bank_data-current_balance.
     ELSE.
