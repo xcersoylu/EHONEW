@@ -38,7 +38,7 @@
                                                     _bitis_tarihi = lv_end_date
                                                     _hesap_no = VALUE #( _ekno = ms_bankpass-suffix+2(1)
                                                                         _hestur = ms_bankpass-suffix(2)
-                                                                        _ilk7 = ms_bankpass-firm_code(7)
+                                                                        _ilk7 = ms_bankpass-firm_code
                                                                         _sinif = ms_bankpass-additional_field1
                                                                         _sube = ms_bankpass-branch_code )
                                                     _kullanici_kodu = ms_bankpass-firm_code ).
