@@ -19,5 +19,7 @@ authorization master ( instance )
       StartDate        = start_date;
       CurrencyField    = currency_field;
       Email            = email;
+      CurrencyTypeUsd  = currency_type_usd;
+      CurrencyTypeEur  = currency_type_eur;
     }
 }

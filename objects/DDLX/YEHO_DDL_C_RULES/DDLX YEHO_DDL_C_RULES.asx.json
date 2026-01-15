@@ -7,9 +7,9 @@
     "DDLXNAME":"YEHO_DDL_C_RULES",
     "VERSION":"A",
     "CHANGED_BY":"SAP_CUSTOMER",
-    "CHANGED_ON":"2025-07-17",
-    "CHANGED_AT":"11:29:20",
-    "UUID":"FA163EBBCF7E1FE098E028F4E9D0453B",
+    "CHANGED_ON":"2026-01-13",
+    "CHANGED_AT":"11:39:14",
+    "UUID":"FA163EBBCF7E1FE0BC8E8F8874966779",
     "ABAP_LANGUAGE_VERSION":"5"
    }
   ]
@@ -34,7 +34,7 @@
     "DDLXNAME":"YEHO_DDL_C_RULES",
     "VERSION":"A",
     "UUID":"",
-    "SOURCE":"@Metadata.layer: #CORE\r\nannotate entity YEHO_DDL_C_RULES with\r\n{\r\n  @UI.facet: [ { id:            'Rules',\r\n                 purpose:       #STANDARD,\r\n                 type:          #IDENTIFICATION_REFERENCE,\r\n                 label:         'Kurallar',\r\n                 position:      10 }  ]\r\n\r\n  @UI : { lineItem: [{  position: 10 }] , identification: [{  position: 10 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_COMPANYCODE', element: 'CompanyCode' }}]\r\n  Companycode;\r\n  @UI : { lineItem: [{  position: 20 }] , identification: [{  position: 20 }] }\r\n  Itemno;\r\n  @UI : { lineItem: [{  position: 30 }] , identification: [{  position: 30 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_GLACCOUNT', element: 'GLAccount' }}]\r\n  AccountNo102;\r\n  @UI : { lineItem: [{  position: 40 }] , identification: [{  position: 40 }] }\r\n  TransactionType;\r\n  @UI : { lineItem: [{  position: 50 }] , identification: [{  position: 50 }] }\r\n  TaxNumber;\r\n  @UI : { lineItem: [{  position: 60 }] , identification: [{  position: 60 }] }\r\n  Iban;\r\n  @UI : { lineItem: [{  position: 70 }] , identification: [{  position: 70 }] }\r\n  Documentitemtext;\r\n  @UI : { lineItem: [{  position: 80 }] , identification: [{  position: 80 }] }\r\n  DebitCreditIndicator;\r\n  @UI : { lineItem: [{  position: 90 }] , identification: [{  position: 90 }] }\r\n  DocumentType;\r\n  @UI : { lineItem: [{  position: 100 }] , identification: [{  position: 100 }] }\r\n  Specialglcode;\r\n  @UI : { lineItem: [{  position: 110 }] , identification: [{  position: 110 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'I_CUSTOMER', element: 'Customer' }}]  \r\n  Customer;\r\n  @UI : { lineItem: [{  position: 120 }] , identification: [{  position: 120 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'I_SUPPLIER', element: 'Supplier' }}]    \r\n  Supplier;\r\n  @UI : { lineItem: [{  position: 130 }] , identification: [{  position: 130 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_GLACCOUNT', element: 'GLAccount' }}]\r\n  AccountNo;\r\n  @UI : { lineItem: [{  position: 140 }] , identification: [{  position: 140 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_GLACCOUNT', element: 'GLAccount' }}]\r\n  ArbitrageAccountNo;\r\n  @UI : { lineItem: [{  position: 150 }] , identification: [{  position: 150 }] }\r\n  Currency;\r\n  @UI : { lineItem: [{  position: 160 }] , identification: [{  position: 160 }] }\r\n  Documentitemtext1;\r\n  @UI : { lineItem: [{  position: 170 }] , identification: [{  position: 170 }] }\r\n  Documentitemtext2;\r\n  @UI : { lineItem: [{  position: 180 }] , identification: [{  position: 180 }] }\r\n  Documentreferenceid;\r\n  @UI : { lineItem: [{  position: 190 }] , identification: [{  position: 190 }] }\r\n  Accountingdocumentheadertext;\r\n  @UI : { lineItem: [{  position: 200 }] , identification: [{  position: 200 }] }\r\n  Assignmentreference;\r\n  @UI : { lineItem: [{  position: 210 }] , identification: [{  position: 210 }] }\r\n  Paymentmethod;\r\n  @UI : { lineItem: [{  position: 220 }] , identification: [{  position: 220 }] }\r\n  Paymentterms;\r\n  //@UI : { lineItem: [{  position: 230 }] , identification: [{  position: 230 }] }\r\n  //Creditcontrolarea;\r\n  @UI : { lineItem: [{  position: 240 }] , identification: [{  position: 240 }] }\r\n  Costcenter;\r\n  @UI : { lineItem: [{  position: 250 }] , identification: [{  position: 250 }] }\r\n  Orderid;\r\n  @UI : { lineItem: [{  position: 260 }] , identification: [{  position: 260 }] }\r\n  Profitcenter;\r\n  @UI : { lineItem: [{  position: 270 }] , identification: [{  position: 270 }] }\r\n  Wbselementinternalid;\r\n  @UI : { lineItem: [{  position: 280 }] , identification: [{  position: 280 }] }\r\n  Personnelnumber;\r\n  @UI : { lineItem: [{  position: 290 }] , identification: [{  position: 290 }] }\r\n  Reference1idbybusinesspartner;\r\n  @UI : { lineItem: [{  position: 300 }] , identification: [{  position: 300 }] }\r\n  Reference2idbybusinesspartner;\r\n  @UI : { lineItem: [{  position: 310 }] , identification: [{  position: 310 }] }\r\n  Reference3idbybusinesspartner;\r\n  @UI : { lineItem: [{  position: 320 }] , identification: [{  position: 320 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_TAXCODE', element: 'TaxCode' }}]\r\n  Taxcode;\r\n  @UI : { lineItem: [{  position: 330 }] , identification: [{  position: 330 }] }\r\n  Businessplace;\r\n\r\n}"
+    "SOURCE":"@Metadata.layer: #CORE\r\nannotate entity YEHO_DDL_C_RULES with\r\n{\r\n  @UI.facet: [ { id:            'Rules',\r\n                 purpose:       #STANDARD,\r\n                 type:          #IDENTIFICATION_REFERENCE,\r\n                 label:         'Kurallar',\r\n                 position:      10 }  ]\r\n\r\n  @UI : { lineItem: [{  position: 10 }] , identification: [{  position: 10 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_COMPANYCODE', element: 'CompanyCode' }}]\r\n  Companycode;\r\n  @UI : { lineItem: [{  position: 20 }] , identification: [{  position: 20 }] }\r\n  Itemno;\r\n  @UI : { lineItem: [{  position: 30 }] , identification: [{  position: 30 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_GLACCOUNT', element: 'GLAccount' }}]\r\n  AccountNo102;\r\n  @UI : { lineItem: [{  position: 40 }] , identification: [{  position: 40 }] }\r\n  TransactionType;\r\n  @UI : { lineItem: [{  position: 50 }] , identification: [{  position: 50 }] }\r\n  TaxNumber;\r\n  @UI : { lineItem: [{  position: 60 }] , identification: [{  position: 60 }] }\r\n  Iban;\r\n  @UI : { lineItem: [{  position: 70 }] , identification: [{  position: 70 }] }\r\n  Documentitemtext;\r\n  @UI : { lineItem: [{  position: 80 }] , identification: [{  position: 80 }] }\r\n  DebitCreditIndicator;\r\n  @UI : { lineItem: [{  position: 90 }] , identification: [{  position: 90 }] }\r\n  DocumentType;\r\n  @UI : { lineItem: [{  position: 100 }] , identification: [{  position: 100 }] }\r\n  Specialglcode;\r\n  @UI : { lineItem: [{  position: 110 }] , identification: [{  position: 110 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'I_CUSTOMER', element: 'Customer' }}]  \r\n  Customer;\r\n  @UI : { lineItem: [{  position: 120 }] , identification: [{  position: 120 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'I_SUPPLIER', element: 'Supplier' }}]    \r\n  Supplier;\r\n  @UI : { lineItem: [{  position: 130 }] , identification: [{  position: 130 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_GLACCOUNT', element: 'GLAccount' }}]\r\n  AccountNo;\r\n  @UI : { lineItem: [{  position: 140 }] , identification: [{  position: 140 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_GLACCOUNT', element: 'GLAccount' }}]\r\n  ArbitrageAccountNo;\r\n  @UI : { lineItem: [{  position: 150 }] , identification: [{  position: 150 }] }\r\n  Currency;\r\n  @UI : { lineItem: [{  position: 160 }] , identification: [{  position: 160 }] }\r\n  Documentitemtext1;\r\n  @UI : { lineItem: [{  position: 170 }] , identification: [{  position: 170 }] }\r\n  Documentitemtext2;\r\n  @UI : { lineItem: [{  position: 180 }] , identification: [{  position: 180 }] }\r\n  Documentreferenceid;\r\n  @UI : { lineItem: [{  position: 190 }] , identification: [{  position: 190 }] }\r\n  Accountingdocumentheadertext;\r\n  @UI : { lineItem: [{  position: 200 }] , identification: [{  position: 200 }] }\r\n  Assignmentreference;\r\n  @UI : { lineItem: [{  position: 210 }] , identification: [{  position: 210 }] }\r\n  Paymentmethod;\r\n  @UI : { lineItem: [{  position: 220 }] , identification: [{  position: 220 }] }\r\n  Paymentterms;\r\n  //@UI : { lineItem: [{  position: 230 }] , identification: [{  position: 230 }] }\r\n  //Creditcontrolarea;\r\n  @UI : { lineItem: [{  position: 240 }] , identification: [{  position: 240 }] }\r\n  Costcenter;\r\n  @UI : { lineItem: [{  position: 250 }] , identification: [{  position: 250 }] }\r\n  Orderid;\r\n  @UI : { lineItem: [{  position: 260 }] , identification: [{  position: 260 }] }\r\n  Profitcenter;\r\n  @UI : { lineItem: [{  position: 270 }] , identification: [{  position: 270 }] }\r\n  Wbselementinternalid;\r\n  @UI : { lineItem: [{  position: 280 }] , identification: [{  position: 280 }] }\r\n  Personnelnumber;\r\n  @UI : { lineItem: [{  position: 290 }] , identification: [{  position: 290 }] }\r\n  Reference1idbybusinesspartner;\r\n  @UI : { lineItem: [{  position: 300 }] , identification: [{  position: 300 }] }\r\n  Reference2idbybusinesspartner;\r\n  @UI : { lineItem: [{  position: 310 }] , identification: [{  position: 310 }] }\r\n  Reference3idbybusinesspartner;\r\n  @UI : { lineItem: [{  position: 320 }] , identification: [{  position: 320 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_TAXCODE', element: 'TaxCode' }}]\r\n  Taxcode;\r\n  @UI : { lineItem: [{  position: 330 }] , identification: [{  position: 330 }] }\r\n  Businessplace;\r\n  @UI : { lineItem: [{  position: 340 }] , identification: [{  position: 340 }] }\r\n  ExchangeRateType;  \r\n\r\n}"
    }
   ]
  },
@@ -373,6 +373,20 @@
    },
    {
     "DDLXNAME":"YEHO_DDL_C_RULES",
+    "ELEMENT":"EXCHANGERATETYPE",
+    "NAME":"UI.IDENTIFICATION$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"340"
+   },
+   {
+    "DDLXNAME":"YEHO_DDL_C_RULES",
+    "ELEMENT":"EXCHANGERATETYPE",
+    "NAME":"UI.LINEITEM$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"340"
+   },
+   {
+    "DDLXNAME":"YEHO_DDL_C_RULES",
     "ELEMENT":"IBAN",
     "NAME":"UI.IDENTIFICATION$1$.POSITION",
     "ELEMENT_TYPE":"S",
@@ -654,8 +668,8 @@
     "EXTENDED_ARTIFACT":"YEHO_DDL_C_RULES",
     "VARIANT":"",
     "LAYER":1500,
-    "DT_UUID":"FA163EBBCF7E1FE098E028F4E9D0453B",
-    "RT_HASH":"3DABE173F8627CCEBFF0388D1C28C210D6EC4FF0",
+    "DT_UUID":"FA163EBBCF7E1FE0BC8E8F8874966779",
+    "RT_HASH":"EEE16B7AD7218A9ABE4EDA318AF7F137EA7AA643",
     "GEN_VERSION":"0",
     "TYPE":"0"
    }

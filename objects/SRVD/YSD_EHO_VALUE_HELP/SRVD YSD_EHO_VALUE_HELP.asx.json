@@ -7,9 +7,9 @@
     "SRVDNAME":"YSD_EHO_VALUE_HELP",
     "VERSION":"A",
     "CHANGED_BY":"SAP_CUSTOMER",
-    "CHANGED_ON":"2025-11-04",
-    "CHANGED_AT":"10:20:31",
-    "DT_UUID":"FA163EBBCF7E1FE0AEACFC8B7C7A469A",
+    "CHANGED_ON":"2026-01-14",
+    "CHANGED_AT":"11:06:44",
+    "DT_UUID":"FA163EBBCF7E1FE0BCA7237F306B677E",
     "SOURCE_ORIGIN":"0",
     "SRVD_SOURCE_TYPE":"S",
     "ABAP_LANGUAGE_VERSION":"5"
@@ -35,7 +35,7 @@
    {
     "SRVDNAME":"YSD_EHO_VALUE_HELP",
     "VERSION":"A",
-    "SOURCE":"@EndUserText.label: 'Arama Yardımı'\r\ndefine service YSD_EHO_VALUE_HELP {\r\n  expose YVH_EHO_COMPANYCODE            as CompanyCode;\r\n  expose YVH_EHO_GLACCOUNT              as GLAccount;\r\n  expose YVH_EHO_RECORD_TYPE            as RecordType;\r\n  expose I_ReversalReasonValueHelp      as ReversalReason;\r\n  expose I_Customer_VH                  as Customer;\r\n  expose I_Supplier_VH                  as Supplier;\r\n  expose YVH_EHO_ACCOUNTINGDOCUMENTTYPE as AccountingDocumentType;\r\n  expose YVH_EHO_COSTCENTER             as CostCenter;\r\n  expose YVH_EHO_specialglcode          as SpecialGLCode;\r\n  expose YVH_EHO_paymentmethod          as PaymentMethod;\r\n  expose YVH_EHO_ACCOUNT                as Account;\r\n  expose YVH_EHO_TAXCODE                as Taxcode;\r\n  expose YVH_EHO_PROFITCENTER           as ProfitCenter;\r\n}"
+    "SOURCE":"@EndUserText.label: 'Arama Yardımı'\r\ndefine service YSD_EHO_VALUE_HELP {\r\n  expose YVH_EHO_COMPANYCODE            as CompanyCode;\r\n  expose YVH_EHO_GLACCOUNT              as GLAccount;\r\n  expose YVH_EHO_RECORD_TYPE            as RecordType;\r\n  expose I_ReversalReasonValueHelp      as ReversalReason;\r\n  expose I_Customer_VH                  as Customer;\r\n  expose I_Supplier_VH                  as Supplier;\r\n  expose YVH_EHO_ACCOUNTINGDOCUMENTTYPE as AccountingDocumentType;\r\n  expose YVH_EHO_COSTCENTER             as CostCenter;\r\n  expose YVH_EHO_specialglcode          as SpecialGLCode;\r\n  expose YVH_EHO_paymentmethod          as PaymentMethod;\r\n  expose YVH_EHO_ACCOUNT                as Account;\r\n  expose YVH_EHO_TAXCODE                as Taxcode;\r\n  expose YVH_EHO_PROFITCENTER           as ProfitCenter;\r\n  expose YVH_EHO_EXCHANGERATETYPE       as ExchangeRateType;\r\n}"
    }
   ]
  },
@@ -132,6 +132,15 @@
    {
     "SRVDNAME":"YSD_EHO_VALUE_HELP",
     "SERVICE":"YSD_EHO_VALUE_HELP",
+    "EXPOSED_ARTIFACT":"YVH_EHO_EXCHANGERATETYPE",
+    "EXPOSED_ARTIFACT_TYPE":"E",
+    "EXPOSED_ALIAS":"EXCHANGERATETYPE",
+    "EXPOSED_ALIAS_RAW":"ExchangeRateType",
+    "INCL_SERVICE":""
+   },
+   {
+    "SRVDNAME":"YSD_EHO_VALUE_HELP",
+    "SERVICE":"YSD_EHO_VALUE_HELP",
     "EXPOSED_ARTIFACT":"YVH_EHO_GLACCOUNT",
     "EXPOSED_ARTIFACT_TYPE":"E",
     "EXPOSED_ALIAS":"GLACCOUNT",
@@ -194,8 +203,8 @@
     "SERVICE":"YSD_EHO_VALUE_HELP",
     "SERVICE_RAW":"YSD_EHO_VALUE_HELP",
     "SOURCE_TYPE":"S",
-    "DT_UUID":"FA163EBBCF7E1FE0AEACFC8B7C7A469A",
-    "RT_HASH":"EA7D01F18B09D4A40BCAE8CD3A7CC15F405C5AB3",
+    "DT_UUID":"FA163EBBCF7E1FE0BCA7237F306B677E",
+    "RT_HASH":"09C53B84E1CCC97111A4FD0C2F64A427CA743C7B",
     "GEN_VERSION":"0"
    }
   ]

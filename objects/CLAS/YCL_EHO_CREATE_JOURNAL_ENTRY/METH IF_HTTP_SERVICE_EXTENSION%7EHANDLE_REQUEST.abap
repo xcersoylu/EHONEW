@@ -75,11 +75,17 @@
     DATA lv_taxbaseamount  TYPE yeho_e_wrbtr.
     DATA lv_tax_ratio      TYPE yeho_e_tax_ratio.
     DATA lv_internal_transfer TYPE c LENGTH 1.
+    DATA lv_usd TYPE yeho_e_wrbtr.
+    DATA lv_eur TYPE yeho_e_wrbtr.
+    DATA lv_add_usd TYPE c LENGTH 1.
+    DATA lv_add_eur TYPE c LENGTH 1.
 
     DATA(lv_request_body) = request->get_text( ).
     DATA(lv_get_method) = request->get_method( ).
 
     /ui2/cl_json=>deserialize( EXPORTING json = lv_request_body CHANGING data = ms_request ).
+    DATA(lv_companycode) = VALUE #( ms_request-items[ 1 ]-companycode OPTIONAL ).
+    SELECT SINGLE * FROM yeho_t_company WHERE companycode = @lv_companycode INTO @DATA(ls_companycode_parameter).
     LOOP AT ms_request-items ASSIGNING FIELD-SYMBOL(<ls_item>).
       APPEND INITIAL LINE TO lt_je ASSIGNING FIELD-SYMBOL(<fs_je>).
       TRY.
@@ -125,6 +131,30 @@
                           _currencyamount = VALUE #( ( currencyrole = '00'
                                                       journalentryitemamount = <ls_item>-amount
                                                       currency = <ls_item>-currency  ) )          ) TO lt_glitem.
+          "ekrandan kur girilmişse 2. ve 3. para birimi manuel hesaplanıyor.
+          IF <ls_item>-exchange_rate_usd > 0 AND <ls_item>-currency = 'TRY'.
+            lv_add_usd = 'X'.
+            lv_usd = <ls_item>-amount / <ls_item>-exchange_rate_usd.
+          ENDIF.
+          IF <ls_item>-exchange_rate_eur > 0 AND <ls_item>-currency = 'TRY'.
+            lv_add_eur = 'X'.
+            lv_eur = <ls_item>-amount / <ls_item>-exchange_rate_eur.
+          ENDIF.
+          IF lv_add_usd = 'X' OR lv_add_eur = 'X'.
+            LOOP AT lt_glitem INTO DATA(ls_item).
+              IF lv_add_usd = 'X'.
+                APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_usd
+                                journalentryitemamount = lv_usd
+                                currency = 'USD' ) TO ls_item-_currencyamount.
+              ENDIF.
+              IF lv_add_eur = 'X'.
+                APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_eur
+                                journalentryitemamount = lv_eur
+                                currency = 'EUR' ) TO ls_item-_currencyamount.
+              ENDIF.
+            ENDLOOP.
+          ENDIF.
+          """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
           IF <ls_item>-supplier IS NOT INITIAL.
             APPEND VALUE #( glaccountlineitem             = |002|
                             supplier                      = <ls_item>-supplier
@@ -142,6 +172,20 @@
                             _currencyamount = VALUE #( ( currencyrole = '00'
                                                        journalentryitemamount = -1 * <ls_item>-amount
                                                        currency = <ls_item>-currency  ) ) ) TO lt_apitem.
+            IF lv_add_usd = 'X' OR lv_add_eur = 'X'.
+              LOOP AT lt_apitem INTO DATA(ls_apitem).
+                IF lv_add_usd = 'X'.
+                  APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_usd
+                                  journalentryitemamount = lv_usd * -1
+                                  currency = 'USD' ) TO ls_apitem-_currencyamount.
+                ENDIF.
+                IF lv_add_eur = 'X'.
+                  APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_eur
+                                  journalentryitemamount = lv_eur * -1
+                                  currency = 'EUR' ) TO ls_apitem-_currencyamount.
+                ENDIF.
+              ENDLOOP.
+            ENDIF.
           ELSEIF <ls_item>-customer IS NOT INITIAL.
             APPEND VALUE #( glaccountlineitem              = |002|
                             customer                       = <ls_item>-customer
@@ -159,6 +203,22 @@
                             _currencyamount = VALUE #( ( currencyrole = '00'
                                                         journalentryitemamount = -1 * <ls_item>-amount
                                                         currency = <ls_item>-currency  ) ) ) TO lt_aritem.
+
+            IF lv_add_usd = 'X' OR lv_add_eur = 'X'.
+              LOOP AT lt_aritem INTO DATA(ls_aritem).
+                IF lv_add_usd = 'X'.
+                  APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_usd
+                                  journalentryitemamount = lv_usd * -1
+                                  currency = 'USD' ) TO ls_aritem-_currencyamount.
+                ENDIF.
+                IF lv_add_eur = 'X'.
+                  APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_eur
+                                  journalentryitemamount = lv_eur * -1
+                                  currency = 'EUR' ) TO ls_aritem-_currencyamount.
+                ENDIF.
+              ENDLOOP.
+            ENDIF.
+
           ELSEIF <ls_item>-operationalglaccount IS NOT INITIAL.
 *kendine virman mı?
             SELECT SINGLE * FROM yeho_t_bankpass WHERE companycode = @<ls_item>-companycode
@@ -184,6 +244,22 @@
                                                                                          THEN <ls_item>-amount * -1
                                                                                          ELSE lv_taxbaseamount )
                                                         currency = <ls_item>-currency  ) )          ) TO lt_glitem.
+
+            IF lv_add_usd = 'X' OR lv_add_eur = 'X'.
+              LOOP AT lt_glitem INTO ls_item WHERE glaccountlineitem = '002'.
+                IF lv_add_usd = 'X'.
+                  APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_usd
+                                  journalentryitemamount = lv_usd * -1
+                                  currency = 'USD' ) TO ls_item-_currencyamount.
+                ENDIF.
+                IF lv_add_eur = 'X'.
+                  APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_eur
+                                  journalentryitemamount = lv_eur * -1
+                                  currency = 'EUR' ) TO ls_item-_currencyamount.
+                ENDIF.
+              ENDLOOP.
+            ENDIF.
+
           ENDIF.
           <fs_je>-%param = VALUE #( companycode                  = <ls_item>-companycode
                                     documentreferenceid          = <ls_item>-documentreferenceid
@@ -194,7 +270,6 @@
                                     postingdate                  = <ls_item>-physical_operation_date
                                     accountingdocumentheadertext = <ls_item>-accountingdocumentheadertext
                                     taxdeterminationdate         = cl_abap_context_info=>get_system_date( )
-*                                    JrnlEntryCntrySpecificRef1   = ycl_eho_utils=>mv_eho_tcode
                                     _apitems                     = VALUE #( FOR wa_apitem  IN lt_apitem  ( CORRESPONDING #( wa_apitem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _aritems                     = VALUE #( FOR wa_aritem  IN lt_aritem  ( CORRESPONDING #( wa_aritem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _glitems                     = VALUE #( FOR wa_glitem  IN lt_glitem  ( CORRESPONDING #( wa_glitem  MAPPING _currencyamount = _currencyamount ) ) )
@@ -234,13 +309,13 @@
                               accountingdocument      = VALUE #( ls_commit_reported-journalentry[ 1 ]-accountingdocument OPTIONAL )
                               fiscal_year             = VALUE #( ls_commit_reported-journalentry[ 1 ]-fiscalyear OPTIONAL )
                               internal_transfer       = lv_internal_transfer ) TO lt_saved_receipts.
-
             ELSE.
               ms_response-messages = VALUE #( BASE ms_response-messages FOR wa_commit IN ls_commit_reported-journalentry ( message = wa_commit-%msg->if_message~get_text( ) messagetype = mc_error ) ).
             ENDIF.
           ENDIF.
           CLEAR : lt_je, lt_glitem , lt_apitem , lt_aritem , ls_failed ,
-                  ls_reported , ls_commit_failed , ls_commit_reported , lv_internal_Transfer.
+                  ls_reported , ls_commit_failed , ls_commit_reported , lv_internal_transfer,
+                  lv_add_usd , lv_add_eur , lv_usd , lv_eur.
         CATCH cx_uuid_error INTO DATA(lx_error).
           APPEND VALUE #( message = lx_error->get_longtext(  ) messagetype = mc_error ) TO ms_response-messages.
       ENDTRY.

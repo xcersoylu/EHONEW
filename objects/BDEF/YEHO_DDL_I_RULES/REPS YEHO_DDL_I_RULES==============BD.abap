@@ -47,5 +47,6 @@ authorization master ( instance )
       Reference3idbybusinesspartner = reference3idbybusinesspartner;
       Taxcode                       = taxcode;
       Businessplace                 = businessplace;
+      ExchangeRateType              = exchange_rate_type;
     }
 }

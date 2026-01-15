@@ -35,7 +35,7 @@
            bseg~debitcreditcode,
            bkpf~transactioncode,
            bkpf~accountingdoccreatedbyuser,
-           ' ' as delete
+           ' ' AS delete
        FROM yeho_t_savedrcpt AS savedrcpt INNER JOIN i_journalentry AS bkpf ON bkpf~companycode = savedrcpt~companycode
                                                                          AND bkpf~accountingdocument = savedrcpt~accountingdocument
                                                                          AND bkpf~fiscalyear = savedrcpt~fiscal_year
@@ -88,15 +88,15 @@
         ENDIF.
 *virman olabilir mi ?
         IF <ls_item>-manualrecord IS INITIAL.
-          READ TABLE lt_virman assIGNING fIELD-SYMBOL(<ls_virman>)
+          READ TABLE lt_virman ASSIGNING FIELD-SYMBOL(<ls_virman>)
                                          WITH KEY glaccount = <ls_item>-glaccount
                                                   postingdate = <ls_item>-physical_operation_date
                                                   absoluteamountintransaccrcy = abs( <ls_item>-amount ).
           IF sy-subrc = 0.
-            <ls_Virman>-delete = abap_true.
+            <ls_virman>-delete = abap_true.
             <ls_item>-manualrecord = abap_true.
           ENDIF.
-          delete lt_virman wHERE delete = abap_true.
+          DELETE lt_virman WHERE delete = abap_true.
         ENDIF.
       ENDLOOP.
       DELETE mt_automatic_items WHERE manualrecord = abap_true.

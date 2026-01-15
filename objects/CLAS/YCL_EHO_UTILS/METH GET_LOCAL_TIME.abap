@@ -1,4 +1,4 @@
-  METHOD GET_LOCAL_TIME.
+  METHOD get_local_time.
     GET TIME STAMP FIELD DATA(lv_ts).
     TRY.
         DATA(lv_tz) = cl_abap_context_info=>get_user_time_zone(  ) .

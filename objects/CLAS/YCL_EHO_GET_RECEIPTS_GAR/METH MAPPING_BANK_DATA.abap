@@ -192,44 +192,44 @@
         ASSIGN COMPONENT 'CORR_ACCOUNT_NUM' OF STRUCTURE <enrichment_value_str> TO <fs_field>.
         IF <fs_field> IS ASSIGNED.
           ASSIGN <fs_field>->* TO <fs_val>.
+          lr_transaction->corr_account_num = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         ENDIF.
-        lr_transaction->corr_account_num = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         UNASSIGN : <fs_field>, <fs_val>.
         ASSIGN COMPONENT 'CORR_IBAN' OF STRUCTURE <enrichment_value_str> TO <fs_field>.
         IF <fs_field> IS ASSIGNED.
           ASSIGN <fs_field>->* TO <fs_val>.
+          lr_transaction->corr_iban = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         ENDIF.
-        lr_transaction->corr_iban = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         UNASSIGN : <fs_field>, <fs_val>.
         ASSIGN COMPONENT 'CORR_UNIT_NUM' OF STRUCTURE <enrichment_value_str> TO <fs_field>.
         IF <fs_field> IS ASSIGNED.
           ASSIGN <fs_field>->* TO <fs_val>.
+          lr_transaction->corr_unit_num = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         ENDIF.
-        lr_transaction->corr_unit_num = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         UNASSIGN : <fs_field>, <fs_val>.
         ASSIGN COMPONENT 'MODULE_NAME' OF STRUCTURE <enrichment_value_str> TO <fs_field>.
         IF <fs_field> IS ASSIGNED.
           ASSIGN <fs_field>->* TO <fs_val>.
+          lr_transaction->module_name = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         ENDIF.
-        lr_transaction->module_name = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         UNASSIGN : <fs_field>, <fs_val>.
         ASSIGN COMPONENT 'PRODUCT_TYPE' OF STRUCTURE <enrichment_value_str> TO <fs_field>.
         IF <fs_field> IS ASSIGNED.
           ASSIGN <fs_field>->* TO <fs_val>.
+          lr_transaction->product_type = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         ENDIF.
-        lr_transaction->product_type = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         UNASSIGN : <fs_field>, <fs_val>.
         ASSIGN COMPONENT 'CORR_NAME_SURNAME_TEXT' OF STRUCTURE <enrichment_value_str> TO <fs_field>.
         IF <fs_field> IS ASSIGNED.
           ASSIGN <fs_field>->* TO <fs_val>.
+          lr_transaction->corr_name_surname_text = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         ENDIF.
-        lr_transaction->corr_name_surname_text = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         UNASSIGN : <fs_field>, <fs_val>.
         ASSIGN COMPONENT 'NAME_SURNAME_TEXT' OF STRUCTURE <enrichment_value_str> TO <fs_field>.
         IF <fs_field> IS ASSIGNED.
           ASSIGN <fs_field>->* TO <fs_val>.
+          lr_transaction->name_surname_text = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         ENDIF.
-        lr_transaction->name_surname_text = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
         UNASSIGN : <fs_field>, <fs_val>.
       ENDLOOP.
 

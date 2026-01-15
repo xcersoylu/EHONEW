@@ -161,6 +161,9 @@
       IF sy-subrc = 0.
         ls_offline_data-transaction_type  = ls_detay-value.
       ENDIF.
+      if ls_offline_data-transaction_type is iNITIAL.
+        ls_offline_data-transaction_type = <fs_hareket>-islemadi.
+      endif.
 
       READ TABLE <fs_hareket>-detaylar-keyvalueofstringstring INTO ls_detay WITH KEY key = 'GonderenSubeKodu'.
       IF sy-subrc = 0.

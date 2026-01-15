@@ -4,7 +4,7 @@ CLASS ycl_eho_utils DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    class-data mv_eho_tcode type c LENGTH 20 VALUE 'YEHO'.
+    CLASS-DATA mv_eho_tcode TYPE c LENGTH 20 VALUE 'YEHO'.
     CLASS-METHODS find_customer_from_tax_number
       IMPORTING iv_tax_number      TYPE i_customer-taxnumber1
       RETURNING VALUE(rv_customer) TYPE kunnr.
@@ -25,6 +25,11 @@ CLASS ycl_eho_utils DEFINITION
     CLASS-METHODS generate_random IMPORTING iv_randomset     TYPE string
                                             iv_length        TYPE i
                                   RETURNING VALUE(rv_string) TYPE string.
+    CLASS-METHODS get_exchange_rate IMPORTING iv_exchangeratetype    TYPE kurst
+                                              iv_sourcecurrency      TYPE fcurr_curr
+                                              iv_targetcurrency      TYPE tcurr_curr
+                                              iv_exchangeratedate    TYPE datum
+                                    RETURNING VALUE(rv_exchangerate) TYPE yeho_e_kursf.
     CONSTANTS mc_message_class TYPE symsgid VALUE 'YEHO_MC'.
     CONSTANTS mc_information TYPE symsgty VALUE 'I'.
     CONSTANTS mc_success TYPE symsgty VALUE 'S'.

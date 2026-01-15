@@ -124,11 +124,11 @@
       IF ls_detay-tutarborcalacak EQ '+'.
         ls_offline_data-debtor_vkn = ls_detay-vkn.
         ls_offline_data-debit_credit = 'A'.
-        ls_offline_data-sender_iban = ls_detay-borcluiban.
+        ls_offline_data-sender_iban = ls_detay-alacakliiban.
       ELSEIF ls_detay-tutarborcalacak EQ '-'.
         ls_offline_data-payee_vkn = ls_detay-vkn.
         ls_offline_data-debit_credit = 'B'.
-        ls_offline_data-sender_iban      = ls_detay-alacakliiban.
+        ls_offline_data-sender_iban      = ls_detay-borcluiban.
       ENDIF.
 
       ls_offline_data-additional_field1                = ls_detay-ozelalan1.
