@@ -30,6 +30,18 @@
   ]
  },
  {
+  "table":"UCONHTTPSERVHAND",
+  "data":
+  [
+   {
+    "ID":"YEHO_GET_EXCHANGE_RATE",
+    "VERSION":"A",
+    "SERVICEORDER":1,
+    "SERVICEHANDLER":"YCL_EHO_GET_EXCHANGE_RATE"
+   }
+  ]
+ },
+ {
   "table":"UCONHTTPSERVHEAD",
   "data":
   [
@@ -40,8 +52,8 @@
     "CREATEDON":"2026-01-13",
     "CREATEDAT":"06:13:30",
     "CHANGEDBY":"SAP_CUSTOMER",
-    "CHANGEDON":"2026-01-13",
-    "CHANGEDAT":"06:13:30",
+    "CHANGEDON":"2026-01-15",
+    "CHANGEDAT":"09:05:13",
     "CREATED_BY_OBJ_PGMID":"",
     "CREATED_BY_OBJ_TYPE":"",
     "CREATED_BY_OBJ_NAME":"",
@@ -53,6 +65,18 @@
     "ICFPARGUID":"",
     "ABAP_LANGUAGE_VERSION":"5",
     "XPRA_UPDATE":""
+   }
+  ]
+ },
+ {
+  "table":"UCONHTTPSERVTEXT",
+  "data":
+  [
+   {
+    "ID":"YEHO_GET_EXCHANGE_RATE",
+    "VERSION":"A",
+    "LANG":"T",
+    "SHORTTEXT":"Kur Bilgisi"
    }
   ]
  }
