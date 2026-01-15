@@ -140,13 +140,13 @@
                                                       journalentryitemamount = <ls_item>-amount
                                                       currency = <ls_item>-currency  ) )          ) TO lt_glitem.
           IF <ls_item>-rule_data-exchange_rate_type IS NOT INITIAL.
-            LOOP AT lt_glitem INTO DATA(ls_glitem).
+            LOOP AT lt_glitem ASSIGNING FIELD-SYMBOL(<ls_glitem>).
               APPEND VALUE #( currencyrole = ls_companycode_parameters-currency_type_usd
                               journalentryitemamount = lv_usd
-                              currency = 'USD' ) TO ls_glitem-_currencyamount.
+                              currency = 'USD' ) TO <ls_glitem>-_currencyamount.
               APPEND VALUE #( currencyrole = ls_companycode_parameters-currency_type_eur
                               journalentryitemamount = lv_eur
-                              currency = 'EUR' ) TO ls_glitem-_currencyamount.
+                              currency = 'EUR' ) TO <ls_glitem>-_currencyamount.
             ENDLOOP.
           ENDIF.
           IF <ls_item>-rule_data-supplier IS NOT INITIAL.
@@ -167,13 +167,13 @@
                                                        journalentryitemamount = -1 * <ls_item>-amount
                                                        currency = <ls_item>-currency  ) ) ) TO lt_apitem.
             IF <ls_item>-rule_data-exchange_rate_type IS NOT INITIAL.
-              LOOP AT lt_apitem INTO DATA(ls_apitem).
+              LOOP AT lt_apitem ASSIGNING FIELD-SYMBOL(<ls_apitem>).
                 APPEND VALUE #( currencyrole = ls_companycode_parameters-currency_type_usd
                                 journalentryitemamount = lv_usd * -1
-                                currency = 'USD' ) TO ls_apitem-_currencyamount.
+                                currency = 'USD' ) TO <ls_apitem>-_currencyamount.
                 APPEND VALUE #( currencyrole = ls_companycode_parameters-currency_type_eur
                                 journalentryitemamount = lv_eur * -1
-                                currency = 'EUR' ) TO ls_apitem-_currencyamount.
+                                currency = 'EUR' ) TO <ls_apitem>-_currencyamount.
               ENDLOOP.
             ENDIF.
           ELSEIF <ls_item>-rule_data-customer IS NOT INITIAL.
@@ -194,13 +194,13 @@
                                                         journalentryitemamount = -1 * <ls_item>-amount
                                                         currency = <ls_item>-currency  ) ) ) TO lt_aritem.
             IF <ls_item>-rule_data-exchange_rate_type IS NOT INITIAL.
-              LOOP AT lt_apitem INTO DATA(ls_aritem).
+              LOOP AT lt_apitem assIGNING fIELD-SYMBOL(<ls_aritem>).
                 APPEND VALUE #( currencyrole = ls_companycode_parameters-currency_type_usd
                                 journalentryitemamount = lv_usd * -1
-                                currency = 'USD' ) TO ls_aritem-_currencyamount.
+                                currency = 'USD' ) TO <ls_aritem>-_currencyamount.
                 APPEND VALUE #( currencyrole = ls_companycode_parameters-currency_type_eur
                                 journalentryitemamount = lv_eur * -1
-                                currency = 'EUR' ) TO ls_aritem-_currencyamount.
+                                currency = 'EUR' ) TO <ls_aritem>-_currencyamount.
               ENDLOOP.
             ENDIF.
           ELSEIF <ls_item>-rule_data-account_no IS NOT INITIAL.
@@ -229,13 +229,13 @@
                                                                                          ELSE lv_taxbaseamount )
                                                         currency = <ls_item>-currency  ) )          ) TO lt_glitem.
             IF <ls_item>-rule_data-exchange_rate_type IS NOT INITIAL.
-              LOOP AT lt_glitem INTO ls_glitem WHERE glaccountlineitem = '002'.
+              LOOP AT lt_glitem ASSIGNING <ls_glitem> WHERE glaccountlineitem = '002'.
                 APPEND VALUE #( currencyrole = ls_companycode_parameters-currency_type_usd
                                 journalentryitemamount = lv_usd * -1
-                                currency = 'USD' ) TO ls_glitem-_currencyamount.
+                                currency = 'USD' ) TO <ls_glitem>-_currencyamount.
                 APPEND VALUE #( currencyrole = ls_companycode_parameters-currency_type_eur
                                 journalentryitemamount = lv_eur * -1
-                                currency = 'EUR' ) TO ls_glitem-_currencyamount.
+                                currency = 'EUR' ) TO <ls_glitem>-_currencyamount.
               ENDLOOP.
             ENDIF.
           ENDIF.

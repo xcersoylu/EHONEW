@@ -132,25 +132,25 @@
                                                       journalentryitemamount = <ls_item>-amount
                                                       currency = <ls_item>-currency  ) )          ) TO lt_glitem.
           "ekrandan kur girilmişse 2. ve 3. para birimi manuel hesaplanıyor.
-          IF <ls_item>-exchange_rate_usd > 0 AND <ls_item>-currency = 'TRY'.
+          IF <ls_item>-exchange_rate_usd > 0 AND ( <ls_item>-currency = 'TRY' OR <ls_item>-currency = 'TL' ).
             lv_add_usd = 'X'.
             lv_usd = <ls_item>-amount / <ls_item>-exchange_rate_usd.
           ENDIF.
-          IF <ls_item>-exchange_rate_eur > 0 AND <ls_item>-currency = 'TRY'.
+          IF <ls_item>-exchange_rate_eur > 0 AND ( <ls_item>-currency = 'TRY' OR <ls_item>-currency = 'TL' ).
             lv_add_eur = 'X'.
             lv_eur = <ls_item>-amount / <ls_item>-exchange_rate_eur.
           ENDIF.
           IF lv_add_usd = 'X' OR lv_add_eur = 'X'.
-            LOOP AT lt_glitem INTO DATA(ls_item).
+            LOOP AT lt_glitem ASSIGNING FIELD-SYMBOL(<ls_glitem>).
               IF lv_add_usd = 'X'.
                 APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_usd
                                 journalentryitemamount = lv_usd
-                                currency = 'USD' ) TO ls_item-_currencyamount.
+                                currency = 'USD' ) TO <ls_glitem>-_currencyamount.
               ENDIF.
               IF lv_add_eur = 'X'.
                 APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_eur
                                 journalentryitemamount = lv_eur
-                                currency = 'EUR' ) TO ls_item-_currencyamount.
+                                currency = 'EUR' ) TO <ls_glitem>-_currencyamount.
               ENDIF.
             ENDLOOP.
           ENDIF.
@@ -173,16 +173,16 @@
                                                        journalentryitemamount = -1 * <ls_item>-amount
                                                        currency = <ls_item>-currency  ) ) ) TO lt_apitem.
             IF lv_add_usd = 'X' OR lv_add_eur = 'X'.
-              LOOP AT lt_apitem INTO DATA(ls_apitem).
+              LOOP AT lt_apitem ASSIGNING FIELD-SYMBOL(<ls_apitem>).
                 IF lv_add_usd = 'X'.
                   APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_usd
                                   journalentryitemamount = lv_usd * -1
-                                  currency = 'USD' ) TO ls_apitem-_currencyamount.
+                                  currency = 'USD' ) TO <ls_apitem>-_currencyamount.
                 ENDIF.
                 IF lv_add_eur = 'X'.
                   APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_eur
                                   journalentryitemamount = lv_eur * -1
-                                  currency = 'EUR' ) TO ls_apitem-_currencyamount.
+                                  currency = 'EUR' ) TO <ls_apitem>-_currencyamount.
                 ENDIF.
               ENDLOOP.
             ENDIF.
@@ -205,16 +205,16 @@
                                                         currency = <ls_item>-currency  ) ) ) TO lt_aritem.
 
             IF lv_add_usd = 'X' OR lv_add_eur = 'X'.
-              LOOP AT lt_aritem INTO DATA(ls_aritem).
+              LOOP AT lt_aritem ASSIGNING FIELD-SYMBOL(<ls_aritem>).
                 IF lv_add_usd = 'X'.
                   APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_usd
                                   journalentryitemamount = lv_usd * -1
-                                  currency = 'USD' ) TO ls_aritem-_currencyamount.
+                                  currency = 'USD' ) TO <ls_aritem>-_currencyamount.
                 ENDIF.
                 IF lv_add_eur = 'X'.
                   APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_eur
                                   journalentryitemamount = lv_eur * -1
-                                  currency = 'EUR' ) TO ls_aritem-_currencyamount.
+                                  currency = 'EUR' ) TO <ls_aritem>-_currencyamount.
                 ENDIF.
               ENDLOOP.
             ENDIF.
@@ -246,16 +246,16 @@
                                                         currency = <ls_item>-currency  ) )          ) TO lt_glitem.
 
             IF lv_add_usd = 'X' OR lv_add_eur = 'X'.
-              LOOP AT lt_glitem INTO ls_item WHERE glaccountlineitem = '002'.
+              LOOP AT lt_glitem asSIGNING <ls_glitem> WHERE glaccountlineitem = '002'.
                 IF lv_add_usd = 'X'.
                   APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_usd
                                   journalentryitemamount = lv_usd * -1
-                                  currency = 'USD' ) TO ls_item-_currencyamount.
+                                  currency = 'USD' ) TO <ls_glitem>-_currencyamount.
                 ENDIF.
                 IF lv_add_eur = 'X'.
                   APPEND VALUE #( currencyrole = ls_companycode_parameter-currency_type_eur
                                   journalentryitemamount = lv_eur * -1
-                                  currency = 'EUR' ) TO ls_item-_currencyamount.
+                                  currency = 'EUR' ) TO <ls_glitem>-_currencyamount.
                 ENDIF.
               ENDLOOP.
             ENDIF.
